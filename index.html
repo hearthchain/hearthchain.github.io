@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hearth · Own your AI stack</title>
+<meta name="description" content="Hearth is a proof-of-stake layer-1 where verified AI inference amplifies block production. Every answer is cryptographically proven; the value flows back to the people who run and use it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"></noscript>
+<style>
+  :root {
+    --bg: #F3F0E9;
+    --panel: #EBE6DA;
+    --ink: #1C1A17;
+    --muted: #635D52;
+    --accent: #7A5C46;
+    --accent-dark: #64492F;
+    --accent-light: #B08A6A;
+    --hair: rgba(28,26,23,.14);
+    --hair-strong: rgba(28,26,23,.26);
+    --dark-ink: #EDE9DF;
+    --serif: 'IBM Plex Serif', Georgia, serif;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--accent); color: var(--bg); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+  @keyframes cursor { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @keyframes breathe { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } html { scroll-behavior: auto; } }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  section { border-bottom: 1px solid rgba(28,26,23,.1); scroll-margin-top: 64px; }
+  .section-pad { padding-top: clamp(72px, 9vw, 128px); padding-bottom: clamp(72px, 9vw, 128px); }
+
+  .label { font-family: var(--mono); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(2.9rem, 8vw, 6rem); line-height: .98; letter-spacing: -0.02em; margin: 28px 0 0; max-width: 13ch; }
+  .h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 0; text-wrap: balance; }
+  .sec-head { display: grid; grid-template-columns: 55fr 45fr; gap: 16px 64px; align-items: start; margin-top: 18px; }
+  .sec-head .h2 { margin: 0; }
+  .sec-intro { color: var(--muted); line-height: 1.6; margin: 0; font-size: 1.05rem; padding-top: 12px; }
+  .lede-xl { font-size: 1.3rem; line-height: 1.5; max-width: 90%; }
+  @media (max-width: 760px) { .sec-head { grid-template-columns: 1fr; } .sec-intro { padding-top: 6px; } }
+
+  .btn { display: inline-block; border-radius: 9px; padding: 13px 24px; font-weight: 500; font-size: .95rem; text-decoration: none; transition: background .2s ease, border-color .2s ease, color .2s ease; }
+  .btn-primary { background: var(--accent); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .quiet-link { display: inline-flex; align-items: center; padding: 13px 4px; font-weight: 500; font-size: .95rem; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--hair-strong); border-radius: 0; }
+  .quiet-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+
+  .grid { display: grid; gap: 20px; margin-top: 48px; }
+  .cols-4 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .cols-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .cols-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+
+  .card { border: 1px solid var(--hair); border-radius: 10px; padding: 26px; transition: border-color .2s ease; }
+  .card:hover { border-color: rgba(28,26,23,.4); }
+  .card p.body { line-height: 1.6; margin: 14px 0 0; font-size: .95rem; }
+  a.card { display: block; color: inherit; text-decoration: none; }
+  .card .goto { display: block; font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; color: var(--accent); margin-top: 18px; }
+
+  .list { list-style: none; padding: 0; margin: 20px 0 0; display: flex; flex-direction: column; gap: 12px; line-height: 1.55; font-size: .95rem; }
+  .list li { display: flex; gap: 10px; }
+  .list .dash { color: var(--accent); flex: none; }
+
+  .milestones { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-direction: column; gap: 14px; font-size: .88rem; line-height: 1.55; }
+  .milestones li { display: flex; gap: 12px; }
+  .milestones .date { font-family: var(--mono); font-size: .72rem; color: var(--accent); white-space: nowrap; padding-top: 2px; flex: none; }
+
+  .pill { font-family: var(--mono); font-size: .68rem; letter-spacing: .12em; border-radius: 999px; padding: 4px 11px; white-space: nowrap; }
+  .pill-solid { background: var(--accent); color: var(--bg); }
+  .pill-line { border: 1px solid var(--hair-strong); color: var(--muted); }
+
+  .glance { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .glance-item { border-left: 1px solid var(--hair-strong); padding-left: 18px; }
+  .burn-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .fineprint-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px 40px; }
+  @media (max-width: 900px) { .glance { grid-template-columns: repeat(2, 1fr); } .burn-steps { grid-template-columns: 1fr; } }
+  @media (max-width: 720px) { .fineprint-grid { grid-template-columns: 1fr; } }
+  .principles-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 48px; }
+  @media (max-width: 760px) { .principles-grid { grid-template-columns: repeat(2, 1fr); } }
+  .waitlist-form { display: flex; gap: 12px; margin-top: 22px; }
+  .waitlist-form input::placeholder { font-family: var(--mono); font-size: .82rem; color: var(--muted); }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); margin: 0; padding: 0; }
+  @media (max-width: 480px) { .waitlist-form { flex-direction: column; align-items: stretch; } }
+  @media (max-width: 480px) { .glance { grid-template-columns: 1fr; } }
+
+  table { border-collapse: collapse; width: 100%; min-width: 780px; font-family: var(--mono); font-size: .82rem; }
+  caption { text-align: left; padding: 18px 22px 0; font-family: var(--mono); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  th { text-align: left; padding: 16px 22px 12px; border-bottom: 1px solid var(--hair); font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-size: .7rem; }
+  td { padding: 11px 22px; border-bottom: 1px solid rgba(28,26,23,.08); }
+  th.num, td.num { text-align: right; }
+  tr:last-child td { border-bottom: none; }
+
+  .micro { font-family: var(--mono); font-size: .74rem; color: var(--muted); line-height: 1.7; }
+
+  header.site { position: sticky; top: 0; z-index: 50; background: rgba(243,240,233,.92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(28,26,23,.1); }
+  .nav { max-width: 1180px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .wordmark { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); margin-right: auto; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: inline-block; flex: none; }
+  .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; font-size: .88rem; }
+  .nav-links a { color: var(--ink); text-decoration: none; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a.gh { border: 1px solid var(--hair-strong); border-radius: 9px; padding: 7px 14px; font-weight: 500; }
+  .nav-links a.gh:hover { border-color: var(--accent); }
+  .nav-toggle { display: none; font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; background: none; border: 1px solid var(--hair-strong); border-radius: 9px; padding: 8px 14px; color: var(--ink); cursor: pointer; }
+  @media (max-width: 760px) {
+    .nav-toggle { display: inline-block; }
+    .nav-links { display: none; }
+    .nav-links.open { display: flex; flex-direction: column; align-items: flex-start; width: 100%; padding: 10px 0 6px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav" aria-label="Main">
+    <a class="wordmark" href="#top">
+      <span class="dot" aria-hidden="true"></span>
+      <span style="font-family: var(--serif); font-weight: 500; font-size: 1.25rem; letter-spacing: -0.01em;">Hearth</span>
+      <span style="font-family: var(--mono); font-size: .68rem; color: var(--muted); letter-spacing: .12em; margin-top: 3px;">HRTH</span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <div class="nav-links" id="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#how">How it works</a>
+      <a href="#token">Token</a>
+      <a href="#genesis">Genesis</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#principles">Principles</a>
+      <a class="gh" href="https://github.com/hearthchain">GitHub</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section data-screen-label="Hero">
+  <div class="container section-pad">
+    <p style="display: inline-flex; align-items: center; gap: 9px; border: 1px solid rgba(28,26,23,.18); border-radius: 999px; padding: 7px 15px; font-family: var(--mono); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin: 0;">
+      <span class="dot" style="width: 7px; height: 7px; animation: blink 2.4s ease-in-out infinite;" aria-hidden="true"></span>
+      Genesis burn opens August 2026
+    </p>
+    <h1>Own your AI stack.</h1>
+    <p style="font-size: clamp(1.05rem, 1.6vw, 1.25rem); line-height: 1.6; color: var(--muted); max-width: 90%; margin: 26px 0 0;">A layer-1 blockchain for AI no one can revoke. Every answer carries a proof, and the value flows back to the people who run and use it.</p>
+    <div style="display: flex; gap: 22px; flex-wrap: wrap; align-items: center; margin-top: 36px;">
+      <a class="btn btn-primary" href="hearth-wp.pdf">Read the whitepaper</a>
+      <a class="quiet-link" href="#waitlist">Get notified for the burn →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem" data-screen-label="Problem">
+  <div class="container section-pad">
+    <p class="label">The problem</p>
+    <div class="sec-head">
+      <h2 class="h2">The AI you build on can be taken away.</h2>
+      <p class="sec-intro">Every product built on hosted AI stands on ground someone else owns. The rent goes up, the model goes away, and there is nothing to appeal to.</p>
+    </div>
+    <div class="grid cols-4">
+      <div class="card">
+        <p class="label">REVOKED</p>
+        <p class="body">An API key is a permission, and permissions get withdrawn. Accounts are suspended, terms change, and whole product lines lose access overnight.</p>
+      </div>
+      <div class="card">
+        <p class="label">DEPRECATED</p>
+        <p class="body">The model your product depends on is retired on someone else's schedule. Your prompts, evals, and edge cases start over from zero. (And once a model is admitted here, no roadmap can retire it.)</p>
+      </div>
+      <div class="card">
+        <p class="label">UNVERIFIED</p>
+        <p class="body">You can't prove which model answered you, or at what precision. You pay for a name on an invoice and take the rest on faith.</p>
+      </div>
+      <div class="card">
+        <p class="label">THROTTLED</p>
+        <p class="body">Rate limits and quotas arrive without notice, tuned to the provider's capacity, not your launch. Your ceiling is set in a room you're not in.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="background: var(--panel);" data-screen-label="How it works">
+  <div class="container section-pad">
+    <p class="label">How it works</p>
+    <div class="sec-head">
+      <h2 class="h2">Models do the work.</h2>
+      <p class="sec-intro">Every answer is proven real. The value flows back to you.</p>
+    </div>
+    <div class="grid cols-3">
+      <div class="card" style="background: var(--bg);">
+        <p class="label">01 · ASK</p>
+        <p class="body">Pick a model, pay a Cred. Any staked node on the network can serve your request: there is no front door to close.</p>
+      </div>
+      <div class="card" style="background: var(--bg);">
+        <p class="label">02 · PROVE</p>
+        <p class="body">The node's sealed enclave attests exactly what was asked and answered. No valid proof, no payment.</p>
+      </div>
+      <div class="card" style="background: var(--bg);">
+        <p class="label">03 · EARN</p>
+        <p class="body">The Cred is burned, the node earns HRTH, and stakers earn Creds. Holding the network's token yields its product.</p>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="gap: 28px; margin-top: 56px; align-items: stretch;">
+      <figure style="margin: 0; border: 1px solid var(--hair); border-radius: 10px; background: var(--bg); padding: 26px; display: flex; flex-direction: column;">
+        <figcaption class="micro" style="letter-spacing: .16em; text-transform: uppercase; margin-bottom: 18px;">One verified request</figcaption>
+        <svg viewBox="0 0 560 300" role="img" aria-label="Hand-sketched diagram: a user's request passes through a sealed enclave to the model; a signed receipt flows down from the enclave to the chain." style="width: 100%; height: auto; flex: 1;">
+          <g fill="none" stroke="#1C1A17" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7,61 Q80,57.5 153,61"></path>
+            <path d="M149.5,56 Q151.5,92 148.5,128"></path>
+            <path d="M154,123.5 Q80,127 6,123"></path>
+            <path d="M10.5,57 Q8.5,92 11.5,127"></path>
+            <path d="M407,61 Q480,58 553,61.5"></path>
+            <path d="M549.5,56.5 Q551.5,92 548.5,127.5"></path>
+            <path d="M554,123.5 Q480,126.5 406,123"></path>
+            <path d="M410.5,56.5 Q408.5,92 411.5,126.5"></path>
+            <path d="M137,213 Q280,209.5 423,212.5"></path>
+            <path d="M419.5,208 Q421.5,240 418.5,271"></path>
+            <path d="M424,267.5 Q280,271 136,267"></path>
+            <path d="M140.5,209 Q138.5,240 141.5,270"></path>
+          </g>
+          <path d="M204,54 Q280,49.5 356,53 Q360.5,92 356.5,130 Q280,134.5 203.5,131 Q199.5,92 204,54 Z" fill="#1C1A17"></path>
+          <g fill="none" stroke="#7A5C46" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M154,92 Q176,89.5 197,91.5"></path>
+            <path d="M197,91.5 L189.5,86.5"></path>
+            <path d="M197,91.5 L190,96.5"></path>
+            <path d="M359,91 Q383,93.5 405,91"></path>
+            <path d="M405,91 L397.5,86.5"></path>
+            <path d="M405,91 L398,96"></path>
+            <path d="M280,135 Q276.5,170 280.5,205" stroke-dasharray="6 7"></path>
+            <path d="M280.5,207 L274.5,199.5"></path>
+            <path d="M280.5,207 L286,199"></path>
+          </g>
+          <text x="80" y="87" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#1C1A17">YOU</text>
+          <text x="80" y="106" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#635D52">pay 1 Cred</text>
+          <text x="280" y="84" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#EDE9DF">SEALED</text>
+          <text x="280" y="102" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#EDE9DF">ENCLAVE</text>
+          <text x="480" y="87" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#1C1A17">MODEL</text>
+          <text x="480" y="106" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#635D52">open weights</text>
+          <text x="292" y="172" font-family="IBM Plex Mono, monospace" font-size="11" fill="#7A5C46">signed receipt</text>
+          <text x="280" y="238" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#1C1A17">HEARTH CHAIN</text>
+          <text x="280" y="256" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#635D52">cred burned · node paid</text>
+        </svg>
+      </figure>
+
+      <figure style="margin: 0; display: flex; flex-direction: column;">
+        <div style="background: var(--ink); border-radius: 10px; padding: 22px 24px; font-family: var(--mono); font-size: .82rem; line-height: 1.75; color: var(--dark-ink); overflow-x: auto; flex: 1;">
+          <div style="display: flex; gap: 7px; margin-bottom: 16px;" aria-hidden="true">
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: rgba(237,233,223,.25); display: inline-block;"></span>
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: rgba(237,233,223,.25); display: inline-block;"></span>
+            <span style="width: 10px; height: 10px; border-radius: 50%; background: rgba(237,233,223,.25); display: inline-block;"></span>
+          </div>
+          <div><span style="color: #B08A6A;">$</span> hearth ask llama-3.1-70b "Summarize this contract in plain terms"</div>
+          <div style="color: rgba(237,233,223,.75); margin-top: 8px;">→ The contract grants a two-year license, renewable once,<br>&nbsp;&nbsp;with termination allowed only for documented breach…</div>
+          <div style="margin-top: 12px; color: rgba(237,233,223,.62);">receipt: attested ✓&nbsp;&nbsp;settled: 1 Cred burned&nbsp;&nbsp;node: 0x7f3a…c94e</div>
+          <div style="margin-top: 8px;"><span style="color: #B08A6A;">$</span> <span style="display: inline-block; width: 9px; height: 17px; background: var(--dark-ink); vertical-align: text-bottom; animation: cursor 1.1s step-end infinite;"></span></div>
+        </div>
+        <figcaption class="micro" style="letter-spacing: .16em; text-transform: uppercase; margin-top: 14px;">Every answer carries a receipt</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- TOKEN -->
+<section id="token" data-screen-label="Token">
+  <div class="container section-pad">
+    <p class="label">Two assets, one loop</p>
+    <h2 class="h2" style="max-width: 20ch;">AI speaks in tokens. Now they're yours.</h2>
+    <div class="grid cols-2">
+      <div class="card" style="padding: 30px;">
+        <div style="display: flex; align-items: baseline; gap: 12px;">
+          <h3 style="font-family: var(--serif); font-weight: 500; font-size: 1.6rem; margin: 0;">HRTH</h3>
+          <span class="micro" style="letter-spacing: .16em; text-transform: uppercase;">The network</span>
+        </div>
+        <ul class="list">
+          <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Stake</strong> it to serve requests and produce blocks.</span></li>
+          <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Forge</strong> it: verified inference amplifies block production.</span></li>
+          <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Govern</strong> with it: one chain, run by the people who hold it.</span></li>
+          <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Earn</strong> it: every issued HRTH is the reward for verified work.</span></li>
+        </ul>
+      </div>
+      <div class="card" style="padding: 30px;">
+        <div style="display: flex; align-items: baseline; gap: 12px;">
+          <h3 style="font-family: var(--serif); font-weight: 500; font-size: 1.6rem; margin: 0;">Creds</h3>
+          <span class="micro" style="letter-spacing: .16em; text-transform: uppercase;">The fuel</span>
+        </div>
+        <ul class="list">
+          <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">USD-priced</strong> inference credits: you always know what an answer costs.</span></li>
+          <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Burned on use</strong>: one request, one Cred, gone for good.</span></li>
+          <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Earned as yield</strong>: holders of staked HRTH receive Creds.</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="lede-xl" style="margin: 40px 0 0;">No account, no API key, no permission: anyone holding a Cred can be served, and anyone can hold a Cred.</p>
+    <div style="margin-top: 20px; border: 1px solid var(--hair); border-radius: 10px; padding: 20px 26px; display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap;">
+      <span class="label">The loop</span>
+      <span style="font-family: var(--mono); font-size: .85rem; color: var(--ink); line-height: 1.7;">dollar demand for inference&nbsp;&nbsp;⟶&nbsp;&nbsp;dollar yield on staking</span>
+    </div>
+  </div>
+</section>
+
+<!-- GENESIS -->
+<section id="genesis" style="background: var(--panel); position: relative; overflow: hidden;" data-screen-label="Genesis">
+  <div aria-hidden="true" style="position: absolute; top: 30px; left: -120px; width: 680px; height: 420px; pointer-events: none; background: radial-gradient(closest-side, rgba(122,92,70,.1), rgba(122,92,70,0) 72%); opacity: .8; animation: breathe 8s ease-in-out infinite;"></div>
+  <div class="container section-pad" style="position: relative; z-index: 1;">
+    <p class="label">Genesis distribution</p>
+    <h2 class="h2">Genesis by fire.</h2>
+
+    <div class="glance" style="margin-top: 44px;">
+      <div class="glance-item">
+        <p class="label" style="font-size: .68rem;">Window</p>
+        <p style="font-family: var(--mono); font-size: .88rem; margin: 8px 0 0;">August–September 2026</p>
+      </div>
+      <div class="glance-item">
+        <p class="label" style="font-size: .68rem;">Credit</p>
+        <p style="font-family: var(--mono); font-size: .88rem; margin: 8px 0 0;">Market price, multi-week TWAP</p>
+      </div>
+      <div class="glance-item">
+        <p class="label" style="font-size: .68rem;">You receive</p>
+        <p style="font-family: var(--mono); font-size: .88rem; margin: 8px 0 0;">HRTH, ready to use, no locks</p>
+      </div>
+      <div class="glance-item">
+        <p class="label" style="font-size: .68rem;">Spec</p>
+        <p style="font-family: var(--mono); font-size: .88rem; margin: 8px 0 0;">Publishes before the window opens</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 44px; border: 1px solid var(--hair); border-radius: 10px; background: var(--bg); overflow-x: auto;">
+      <table>
+        <caption>The ten fallen angels</caption>
+        <thead>
+          <tr>
+            <th scope="col">Chain</th>
+            <th scope="col" class="num">Peak rank</th>
+            <th scope="col" class="num">Peak network cap</th>
+            <th scope="col" style="padding-left: 36px;">Trajectory</th>
+            <th scope="col" class="num">Now</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>EOS</td><td class="num">#4</td><td class="num">$17.8B</td><td style="padding-left: 36px;"><svg viewBox="0 0 90 20" width="90" height="20" aria-hidden="true" style="display: block;"><polyline points="1.0,8.8 3.5,11.8 6.0,9.4 8.5,7.1 11.1,6.5 13.6,6.5 16.1,6.5 18.6,6.5 21.1,8.1 23.6,7.6 26.1,8.1 28.7,8.5 31.2,9.4 33.7,9.7 36.2,10.8 38.7,11.3 41.2,12.6 43.7,13.9 46.3,14.2 48.8,14.1 51.3,13.9 53.8,13.8 56.3,13.9 58.8,14.2 61.3,14.4 63.9,15.2 66.4,16.2 68.9,16.4 71.4,15.8 73.9,15.3 76.4,15.7 78.9,15.3 81.5,19.0 84.0,19.0 86.5,19.0 89.0,19.0" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></td><td class="num">#171</td></tr>
+          <tr><td>NEM</td><td class="num">#4</td><td class="num">$16.6B</td><td style="padding-left: 36px;"><svg viewBox="0 0 90 20" width="90" height="20" aria-hidden="true" style="display: block;"><polyline points="1.0,11.3 3.5,12.3 6.0,12.2 8.5,9.4 11.1,7.1 13.6,9.4 16.1,8.1 18.6,7.1 21.1,7.6 23.6,9.4 26.1,10.4 28.7,10.6 31.2,10.8 33.7,11.2 36.2,12.1 38.7,12.7 41.2,12.6 43.7,11.5 46.3,11.0 48.8,14.2 51.3,15.4 53.8,16.1 56.3,16.2 58.8,16.1 61.3,16.4 63.9,16.8 66.4,17.1 68.9,17.5 71.4,18.6 73.9,18.9 76.4,19.0 78.9,18.8 81.5,19.0 84.0,19.0 86.5,19.0 89.0,19.0" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></td><td class="num" style="color: var(--muted);">&gt;200</td></tr>
+          <tr><td>IOTA</td><td class="num">#4</td><td class="num">$11.5B</td><td style="padding-left: 36px;"><svg viewBox="0 0 90 20" width="90" height="20" aria-hidden="true" style="display: block;"><polyline points="1.0,8.1 3.5,8.5 6.0,7.6 8.5,8.8 11.1,8.8 13.6,9.1 16.1,9.4 18.6,10.2 21.1,10.8 23.6,10.4 26.1,11.9 28.7,12.1 31.2,12.1 33.7,12.1 36.2,12.7 38.7,12.3 41.2,14.0 43.7,14.1 46.3,14.2 48.8,15.0 51.3,14.5 53.8,15.1 56.3,15.4 58.8,16.0 61.3,15.9 63.9,15.8 66.4,19.0 68.9,19.0 71.4,19.0 73.9,19.0 76.4,19.0 78.9,19.0 81.5,19.0 84.0,19.0 86.5,19.0 89.0,19.0" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></td><td class="num">#132</td></tr>
+          <tr><td>NEO</td><td class="num">#6</td><td class="num">$11.1B</td><td style="padding-left: 36px;"><svg viewBox="0 0 90 20" width="90" height="20" aria-hidden="true" style="display: block;"><polyline points="1.0,12.2 3.5,14.0 6.0,14.0 8.5,8.5 11.1,9.7 13.6,7.1 16.1,9.4 18.6,10.0 21.1,10.6 23.6,10.6 26.1,10.4 28.7,11.0 31.2,11.0 33.7,11.5 36.2,11.3 38.7,11.7 41.2,13.4 43.7,13.2 46.3,14.3 48.8,15.3 51.3,15.2 53.8,15.0 56.3,15.4 58.8,14.8 61.3,15.0 63.9,15.1 66.4,15.4 68.9,16.4 71.4,16.1 73.9,16.4 76.4,16.5 78.9,17.4 81.5,17.7 84.0,17.8 86.5,17.8 89.0,18.0" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></td><td class="num">#149</td></tr>
+          <tr><td>Tezos</td><td class="num">#10</td><td class="num">$7.5B</td><td style="padding-left: 36px;"><svg viewBox="0 0 90 20" width="90" height="20" aria-hidden="true" style="display: block;"><polyline points="1.0,10.8 3.5,10.6 6.0,11.7 8.5,11.5 11.1,10.8 13.6,10.6 16.1,10.8 18.6,8.8 21.1,8.8 23.6,9.7 26.1,10.6 28.7,11.3 31.2,13.2 33.7,13.5 36.2,12.7 38.7,14.0 41.2,13.9 43.7,13.6 46.3,13.3 48.8,13.9 51.3,14.4 53.8,14.4 56.3,14.6 58.8,14.6 61.3,15.6 63.9,16.0 66.4,16.3 68.9,16.1 71.4,16.7 73.9,15.9 76.4,16.8 78.9,15.9 81.5,16.4 84.0,16.1 86.5,16.3 89.0,17.0" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></td><td class="num">#112</td></tr>
+          <tr><td>Bitcoin SV</td><td class="num">#5</td><td class="num">$6.7B</td><td style="padding-left: 36px;"><svg viewBox="0 0 90 20" width="90" height="20" aria-hidden="true" style="display: block;"><polyline points="1.0,8.5 3.5,9.1 6.0,10.0 8.5,8.5 11.1,8.5 13.6,8.5 16.1,7.6 18.6,7.1 21.1,8.1 23.6,9.1 26.1,10.4 28.7,12.3 31.2,12.7 33.7,14.4 36.2,15.0 38.7,14.9 41.2,14.7 43.7,14.1 46.3,14.5 48.8,13.7 51.3,15.3 53.8,15.4 56.3,14.7 58.8,14.5 61.3,14.4 63.9,15.3 66.4,16.0 68.9,15.4 71.4,16.3 73.9,16.4 76.4,16.5 78.9,17.1 81.5,17.2 84.0,17.0 86.5,16.9 89.0,17.2" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></td><td class="num">#118</td></tr>
+          <tr><td>Waves</td><td class="num">#9</td><td class="num">$5.0B</td><td style="padding-left: 36px;"><svg viewBox="0 0 90 20" width="90" height="20" aria-hidden="true" style="display: block;"><polyline points="1.0,10.0 3.5,10.2 6.0,10.0 8.5,11.3 11.1,10.6 13.6,11.7 16.1,12.6 18.6,13.7 21.1,13.6 23.6,11.7 26.1,13.0 28.7,14.4 31.2,15.9 33.7,15.1 36.2,15.5 38.7,14.7 41.2,14.2 43.7,14.7 46.3,14.3 48.8,15.4 51.3,14.2 53.8,15.3 56.3,16.1 58.8,17.1 61.3,18.0 63.9,17.6 66.4,18.1 68.9,18.8 71.4,19.0 73.9,19.0 76.4,19.0 78.9,19.0 81.5,19.0 84.0,19.0 86.5,19.0 89.0,19.0" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></td><td class="num" style="color: var(--muted);">&gt;200</td></tr>
+          <tr><td>Lisk</td><td class="num">#7</td><td class="num">$4.0B</td><td style="padding-left: 36px;"><svg viewBox="0 0 90 20" width="90" height="20" aria-hidden="true" style="display: block;"><polyline points="1.0,7.6 3.5,9.4 6.0,10.8 8.5,12.2 11.1,12.3 13.6,10.6 16.1,10.0 18.6,11.7 21.1,11.7 23.6,13.1 26.1,12.9 28.7,14.0 31.2,15.2 33.7,13.9 36.2,14.7 38.7,15.8 41.2,16.2 43.7,17.0 46.3,16.9 48.8,18.3 51.3,19.0 53.8,18.0 56.3,18.3 58.8,18.6 61.3,18.9 63.9,18.8 66.4,18.8 68.9,19.0 71.4,19.0 73.9,19.0 76.4,19.0 78.9,19.0 81.5,19.0 84.0,19.0 86.5,19.0 89.0,19.0" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></td><td class="num" style="color: var(--muted);">&gt;200</td></tr>
+          <tr><td>BitShares</td><td class="num">#3</td><td class="num">$2.1B</td><td style="padding-left: 36px;"><svg viewBox="0 0 90 20" width="90" height="20" aria-hidden="true" style="display: block;"><polyline points="1.0,8.1 3.5,5.7 6.0,6.5 8.5,8.8 11.1,8.5 13.6,8.8 16.1,11.0 18.6,11.5 21.1,12.6 23.6,11.2 26.1,12.1 28.7,12.9 31.2,12.6 33.7,13.9 36.2,13.9 38.7,15.3 41.2,16.8 43.7,16.7 46.3,16.2 48.8,17.7 51.3,18.2 53.8,19.0 56.3,19.0 58.8,19.0 61.3,19.0 63.9,19.0 66.4,19.0 68.9,19.0 71.4,19.0 73.9,19.0 76.4,19.0 78.9,19.0 81.5,19.0 84.0,19.0 86.5,19.0 89.0,19.0" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></td><td class="num" style="color: var(--muted);">&gt;200</td></tr>
+          <tr><td>Stratis</td><td class="num">#8</td><td class="num">$2.0B</td><td style="padding-left: 36px;"><svg viewBox="0 0 90 20" width="90" height="20" aria-hidden="true" style="display: block;"><polyline points="1.0,13.6 3.5,12.4 6.0,12.2 8.5,8.8 11.1,11.0 13.6,13.1 16.1,13.4 18.6,13.9 21.1,14.4 23.6,14.6 26.1,15.5 28.7,17.4 31.2,17.1 33.7,18.0 36.2,17.7 38.7,18.2 41.2,19.0 43.7,19.0 46.3,19.0 48.8,19.0 51.3,19.0 53.8,19.0 56.3,19.0 58.8,19.0 61.3,19.0 63.9,19.0 66.4,19.0 68.9,19.0 71.4,19.0 73.9,19.0 76.4,19.0 78.9,19.0 81.5,19.0 84.0,19.0 86.5,19.0 89.0,19.0" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></td><td class="num" style="color: var(--muted);">&gt;200</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: .95rem; line-height: 1.6; color: var(--ink); max-width: 90%; margin: 20px 0 0;">Genesis HRTH is claimed one way: by burning the tokens of these ten chains. They built this industry's first decade; the burn gives their coins one last purpose.</p>
+    <p class="micro" style="margin: 10px 0 0; max-width: 90%;">Rank history and figures from weekly CoinMarketCap snapshots, 2013–2026; ‘now’ as of June 2026; approximate. Flat tails: the coin left the top-200.</p>
+
+    <h3 class="label" style="margin-top: 56px;">How to burn</h3>
+    <div class="burn-steps" style="margin-top: 24px;">
+      <div class="card" style="background: var(--bg);">
+        <p class="label">01 · SEND</p>
+        <p class="body">Send tokens to the published burn address for that chain, any time before the window closes.</p>
+      </div>
+      <div class="card" style="background: var(--bg);">
+        <p class="label">02 · PROVE</p>
+        <p class="body">Submit the burn proof. The format for each chain is in the genesis spec.</p>
+      </div>
+      <div class="card" style="background: var(--bg);">
+        <p class="label">03 · RECEIVE</p>
+        <p class="body">At the October genesis your HRTH arrives, ready to use. No locks, no waiting.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 44px; border: 1px solid var(--hair); border-radius: 10px; padding: 30px;">
+      <p class="label" style="color: var(--muted);">The fine print</p>
+      <div class="fineprint-grid" style="margin-top: 20px;">
+        <div>
+          <p class="label" style="font-size: .68rem;">CREDITING</p>
+          <p style="font-size: .88rem; line-height: 1.6; color: var(--muted); margin: 10px 0 0;">Multi-week TWAP, not the spot print, so a thin market cannot be pumped and burned at the top. Methodology fixed in the spec.</p>
+        </div>
+        <div>
+          <p class="label" style="font-size: .68rem;">CAPS</p>
+          <p style="font-size: .88rem; line-height: 1.6; color: var(--muted); margin: 10px 0 0;">Each chain's share of genesis is capped. No single chain and no single whale can claim an outsized share of genesis.</p>
+        </div>
+        <div>
+          <p class="label" style="font-size: .68rem;">NO LOCKS</p>
+          <p style="font-size: .88rem; line-height: 1.6; color: var(--muted); margin: 10px 0 0;">Genesis HRTH is liquid from block one. Staking is a choice, not a condition of claiming.</p>
+        </div>
+        <div>
+          <p class="label" style="font-size: .68rem;">FUNDING</p>
+          <p style="font-size: .88rem; line-height: 1.6; color: var(--muted); margin: 10px 0 0;">No VC, no presale. A disclosed, capped development allocation, vested over years, funds the work; exact share in the spec.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="lede-xl" style="color: var(--ink); margin: 64px 0 0;">Burning does not set HRTH's price. The credit formula is an accounting rule for dividing genesis, not a valuation.</p>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" data-screen-label="Roadmap">
+  <div class="container section-pad">
+    <p class="label">Roadmap</p>
+    <div class="sec-head">
+      <h2 class="h2">Honest about where we are.</h2>
+      <p class="sec-intro">Each phase is a strict superset of the last. Phase 1 is a concrete commitment; later phases are directional until the phase before them ships.</p>
+    </div>
+
+    <div class="grid cols-3">
+      <div class="card" style="border-color: var(--hair-strong); padding: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 10px;">
+          <p class="label">PHASE 1 · RELAY</p>
+          <span class="pill pill-solid">NOW</span>
+        </div>
+        <h3 style="font-family: var(--serif); font-weight: 500; font-size: 1.35rem; margin: 16px 0 0; line-height: 1.2;">Borrowed compute, real chain.</h3>
+        <p class="body" style="color: var(--muted); font-size: .92rem;">The chain, the token, and the incentives are real while the compute is borrowed.</p>
+        <ul class="milestones">
+          <li><span class="date">Jul 2026</span><span>Whitepaper v2, devnet fork, relay-enclave prototype, genesis burn spec published.</span></li>
+          <li><span class="date">Aug 2026</span><span>Genesis burn window opens on the ten source chains, burns credited at time-weighted average price. Incentivized testnet with staking, relay jobs, and the statistical audit committee, bonded verifiers staked on chain.</span></li>
+          <li><span class="date">Sep 2026</span><span>Burn window closes; genesis allocation snapshot published as a Merkle root anyone can recompute from the source chains.</span></li>
+          <li><span class="date">Oct 2026</span><span>Mainnet launch: HRTH distributed to burners, USD Creds live, staking and non-custodial leasing open.</span></li>
+          <li><span class="date">Nov–Dec 2026</span><span>OpenAI-compatible gateway and SDK; reputation-weighted routing at scale; public dashboard of organic USD revenue vs subsidy.</span></li>
+        </ul>
+      </div>
+      <div class="card" style="padding: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 10px;">
+          <p class="label">PHASE 2 · COMPUTE</p>
+          <span class="pill pill-line">NEXT</span>
+        </div>
+        <h3 style="font-family: var(--serif); font-weight: 500; font-size: 1.35rem; margin: 16px 0 0; line-height: 1.2;">The network's own GPUs.</h3>
+        <p class="body" style="color: var(--muted); font-size: .92rem;">The borrowed layer is retired: the network runs on hardware its own people own.</p>
+        <ul class="milestones">
+          <li><span class="date">Q1 2027</span><span>Confidential-GPU node software (H100/Blackwell TEEs): weights pinned by hash, responses signed inside the enclave. First self-hosted nodes join mainnet alongside relay nodes.</span></li>
+          <li><span class="date">Q2 2027</span><span>Full per-job verification turns on: a bonded committee re-runs sampled forward passes and checks logits within tolerance, backed by watermarking, honeypot probes, and model-identity testing.</span></li>
+          <li><span class="date">Q3 2027</span><span>End-to-end prompt privacy: the enclave decrypts, computes, and returns without the operator ever seeing plaintext. Per-model Creds launch model-by-model, priced on open AMMs.</span></li>
+          <li><span class="date">Q4 2027</span><span>Attested nodes take premium and privacy-sensitive jobs; as self-hosted capacity grows, the hosted aggregator is retired. No flag-day: the mixed network prices the difference.</span></li>
+        </ul>
+        <p class="micro" style="margin: 20px 0 0;">Directional until Phase 1 ships.</p>
+      </div>
+      <div class="card" style="padding: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 10px;">
+          <p class="label">PHASE 3 · COORDINATE</p>
+          <span class="pill pill-line">LATER</span>
+        </div>
+        <h3 style="font-family: var(--serif); font-weight: 500; font-size: 1.35rem; margin: 16px 0 0; line-height: 1.2;">Agents paying agents.</h3>
+        <p class="body" style="color: var(--muted); font-size: .92rem;">Verified inference becomes verified coordination.</p>
+        <ul class="milestones">
+          <li><span class="date">Q1 2028</span><span>A governance-pinned router model runs in a TEE and decides which model serves each step of a composed job; every routing decision is itself a verifiable forward pass.</span></li>
+          <li><span class="date">Q2 2028</span><span>Composed jobs: multi-step, multi-model tasks emit one route receipt chaining every decision and every worker's receipt. Machine-checkable end to end.</span></li>
+          <li><span class="date">Q3 2028</span><span>The coordination fee: the router earns a governance-capped slice for a provably honest route. Escrowed agent-to-agent settlement: when agents pay agents, the receipt is the trust.</span></li>
+          <li><span class="date">Q4 2028</span><span>The trustless floor: fraud proofs (and ZK as it matures) over the small router, a routing guarantee that survives even a compromised attestation root.</span></li>
+        </ul>
+        <p class="micro" style="margin: 20px 0 0;">Directional until Phase 2 ships.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px; border: 1px dashed var(--hair-strong); border-radius: 10px; padding: 30px;">
+      <p class="label" style="color: var(--muted);">BEYOND · THE GENERALIZED MARKET</p>
+      <p style="line-height: 1.65; font-size: .95rem; color: var(--muted); margin: 16px 0 0; max-width: 90%;">Everything on this page is one primitive: attested computation with a receipt, and one economy: credits backed by verified capacity. Nothing about it is specific to text generation. As verification costs fall, the same market admits new work:</p>
+      <ul class="list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px 40px; font-size: .88rem; margin-top: 24px;">
+        <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Verified embeddings &amp; RAG:</strong> a receipt that an answer was grounded in this corpus, retrieved honestly, generated by this model.</span></li>
+        <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Verified evaluation:</strong> reproducible benchmarks in a field of unreproducible leaderboards.</span></li>
+        <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Verified synthetic data:</strong> every dataset with an attested birth certificate.</span></li>
+        <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Weight availability:</strong> pinned weights replicated across the mesh. A model admitted to Hearth cannot be retired by a provider's roadmap.</span></li>
+        <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Verified AI as an oracle:</strong> receipts any chain can verify.</span></li>
+        <li><span class="dash" aria-hidden="true">·</span><span><strong style="font-weight: 600;">Agent receipts:</strong> when agents pay agents, the receipt is the trust.</span></li>
+      </ul>
+      <p style="font-family: var(--mono); font-size: .85rem; line-height: 1.7; color: var(--ink); margin: 26px 0 0;">Verified inference becomes a commodity anyone can hold and spend.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section id="principles" style="background: var(--ink); color: var(--dark-ink);" data-screen-label="Principles">
+  <div class="container section-pad">
+    <p class="label" style="color: var(--accent-light);">Principles</p>
+    <h2 class="h2">What the fire is for.</h2>
+    <div class="principles-grid">
+      <div class="card" style="border-color: rgba(237,233,223,.18); padding: 28px;">
+        <p class="label" style="color: var(--accent-light);">01</p>
+        <p style="font-family: var(--serif); font-weight: 500; font-size: 1.25rem; line-height: 1.35; margin: 14px 0 0;">Models are owned, not rented.</p>
+      </div>
+      <div class="card" style="border-color: rgba(237,233,223,.18); padding: 28px;">
+        <p class="label" style="color: var(--accent-light);">02</p>
+        <p style="font-family: var(--serif); font-weight: 500; font-size: 1.25rem; line-height: 1.35; margin: 14px 0 0;">Every answer carries a proof, not a promise.</p>
+      </div>
+      <div class="card" style="border-color: rgba(237,233,223,.18); padding: 28px;">
+        <p class="label" style="color: var(--accent-light);">03</p>
+        <p style="font-family: var(--serif); font-weight: 500; font-size: 1.25rem; line-height: 1.35; margin: 14px 0 0;">No one, including us, holds a kill switch.</p>
+      </div>
+      <div class="card" style="border-color: rgba(237,233,223,.18); padding: 28px;">
+        <p class="label" style="color: var(--accent-light);">04</p>
+        <p style="font-family: var(--serif); font-weight: 500; font-size: 1.25rem; line-height: 1.35; margin: 14px 0 0;">Earned, not sold: no VC, no presale, genesis by burn.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GET INVOLVED -->
+<section id="involved" data-screen-label="Get involved">
+  <div class="container section-pad">
+    <p class="label">Get involved</p>
+    <h2 class="h2" style="max-width: 18ch;">Pull up a chair.</h2>
+    <div class="grid cols-3">
+      <a class="card" href="#waitlist">
+        <p class="label">RUN A NODE</p>
+        <p class="body">Stake HRTH, serve verified inference, earn for the work. Node onboarding opens with the August testnet.</p>
+        <span class="goto">→ Get notified</span>
+      </a>
+      <a class="card" href="#genesis">
+        <p class="label">BURN FOR GENESIS</p>
+        <p class="body">Hold coins from one of the ten chains? Your share of genesis is claimed at the burn window: mechanics above.</p>
+        <span class="goto">→ Genesis</span>
+      </a>
+      <a class="card" href="https://github.com/hearthchain">
+        <p class="label">CONTRIBUTE</p>
+        <p class="body">Everything is open source: node software, enclave code, burn portal. Issues are open on GitHub.</p>
+        <span class="goto">→ github.com/hearthchain</span>
+      </a>
+    </div>
+
+    <div id="waitlist" style="scroll-margin-top: 80px; margin-top: 56px; border: 1px solid var(--hair); border-radius: 10px; background: var(--panel); padding: clamp(26px, 4vw, 44px);">
+      <h3 style="font-family: var(--serif); font-weight: 500; font-size: 1.5rem; margin: 0;">Know when the burn window opens.</h3>
+      <form name="waitlist" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="bot-field" class="waitlist-form">
+        <input type="hidden" name="form-name" value="waitlist">
+        <p class="visually-hidden"><label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <label class="visually-hidden" for="waitlist-email">Email address</label>
+        <input id="waitlist-email" type="email" name="email" required placeholder="you@domain.dev" style="flex: 1 1 220px; min-width: 0; border: 1px solid var(--hair-strong); border-radius: 9px; padding: 12px 16px; font-family: var(--sans); font-size: .95rem; background: var(--bg); color: var(--ink);">
+        <button type="submit" class="btn btn-primary" style="border: none; cursor: pointer; font-family: var(--sans);">Get notified</button>
+      </form>
+      <p class="micro" style="margin: 14px 0 0;">No spam. One mail when the window opens.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container" style="padding-top: 48px; padding-bottom: 56px; display: flex; justify-content: space-between; align-items: flex-start; gap: 28px; flex-wrap: wrap;">
+    <div>
+      <div style="display: flex; align-items: center; gap: 9px;">
+        <span class="dot" aria-hidden="true"></span>
+        <span style="font-family: var(--serif); font-weight: 500; font-size: 1.15rem;">Hearth</span>
+      </div>
+      <p style="color: var(--muted); font-size: .88rem; margin: 12px 0 0; line-height: 1.6;">Intelligence for everyone. Controlled by no one.</p>
+    </div>
+    <nav aria-label="Footer" style="display: flex; gap: 22px; flex-wrap: wrap; font-size: .88rem;">
+      <a href="https://github.com/hearthchain" style="color: var(--ink); text-decoration: none;">GitHub</a>
+      <a href="hearth-wp.pdf" style="color: var(--ink); text-decoration: none;">Whitepaper</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var btn = document.querySelector('.nav-toggle');
+    var links = document.getElementById('nav-links');
+    if (!btn || !links) return;
+    btn.addEventListener('click', function () {
+      var open = links.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    links.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A' && links.classList.contains('open')) {
+        links.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
