@@ -645,14 +645,38 @@
 
     <div id="waitlist" class="notice" style="scroll-margin-top: 80px; margin-top: 52px; padding: clamp(26px, 4vw, 40px);">
       <h3 style="font-family: var(--serif); font-weight: normal; font-size: 1.4rem; margin: 0;">Know when the burn window opens.</h3>
-      <form name="waitlist" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="bot-field" class="waitlist-form">
-        <input type="hidden" name="form-name" value="waitlist">
+      <form name="waitlist" method="POST" action="https://hearth-waitlist.hearthchain.workers.dev/subscribe" class="waitlist-form">
         <p class="visually-hidden"><label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
         <label class="visually-hidden" for="waitlist-email">Email address</label>
         <input id="waitlist-email" type="email" name="email" required="" placeholder="you@domain.dev">
         <button type="submit" class="btn btn-primary">Get notified</button>
       </form>
       <p id="waitlist-success" hidden="" style="font-size: .95rem; line-height: 1.6; margin: 20px 0 0;">You're on the list. See you at the fire. <span style="color: var(--accent);">◎</span></p>
+      <p id="waitlist-error" hidden="" style="font-size: .95rem; line-height: 1.6; margin: 20px 0 0;">Something went wrong — please try again in a minute.</p>
+      <script>
+      (function(){
+        var form = document.querySelector('.waitlist-form');
+        var ok = document.getElementById('waitlist-success');
+        var err = document.getElementById('waitlist-error');
+        form.addEventListener('submit', function(e){
+          e.preventDefault();
+          err.hidden = true;
+          var btn = form.querySelector('button');
+          btn.disabled = true;
+          fetch(form.action, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              email: form.email.value,
+              'bot-field': form['bot-field'].value
+            })
+          }).then(function(r){ return r.json(); }).then(function(d){
+            if (d.ok) { form.hidden = true; ok.hidden = false; }
+            else { err.hidden = false; btn.disabled = false; }
+          }).catch(function(){ err.hidden = false; btn.disabled = false; });
+        });
+      })();
+      </script>
       <p class="micro" style="margin: 14px 0 0;">No spam. One mail when the window opens.</p>
     </div>
   </div>
