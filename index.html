@@ -130,7 +130,7 @@
   .micro { font-family: var(--mono); font-size: .72rem; color: var(--muted); line-height: 1.7; }
 
   /* nav: plain white bar, thin gray rule, simple horizontal links */
-  header.site { position: sticky; top: 0; z-index: 50; background: #FFF; border-bottom: 1px solid var(--hair); }
+  header.site { position: sticky; top: 0; z-index: 100; background: #FFFFFF; border-bottom: 1px solid var(--hair); transform: translateZ(0); }
   .nav { max-width: 980px; margin: 0 auto; padding: 12px 22px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
   .wordmark { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); margin-right: auto; }
   .nav-links { display: flex; align-items: center; gap: 17px; flex-wrap: wrap; font-size: .86rem; }
@@ -434,15 +434,15 @@
       </div>
       <div class="glance-item">
         <p class="label" style="font-size: .66rem;">Credit</p>
-        <p style="font-family: var(--mono); font-size: .86rem; margin: 8px 0 0;">Market price, multi-week TWAP</p>
+        <p style="font-family: var(--mono); font-size: .86rem; margin: 8px 0 0;">Your coins × their highest weekly price while you held them</p>
       </div>
       <div class="glance-item">
         <p class="label" style="font-size: .66rem;">You receive</p>
         <p style="font-family: var(--mono); font-size: .86rem; margin: 8px 0 0;">HRTH, ready to use, no locks</p>
       </div>
       <div class="glance-item">
-        <p class="label" style="font-size: .66rem;">Spec</p>
-        <p style="font-family: var(--mono); font-size: .86rem; margin: 8px 0 0;">Publishes before the window opens</p>
+        <p class="label" style="font-size: .66rem;">Burn spec</p>
+        <p style="font-family: var(--mono); font-size: .86rem; margin: 8px 0 0;">In the works: publishes July 2026, before the window opens</p>
       </div>
     </div>
 
@@ -490,30 +490,13 @@
         <p class="body">At the October genesis your HRTH arrives, ready to use. No locks, no waiting.</p>
       </div>
     </div>
+    <p style="text-align: center; font-size: .85rem; color: var(--muted); margin-top: 18px;">Never burn straight from an exchange: withdraw to your own address first. Exchange custody never earns the holding multiplier.</p>
 
-    <div class="card" style="margin-top: 44px; padding: 28px;">
-      <p class="label" style="color: var(--muted);">The fine print</p>
-      <div class="fineprint-grid" style="margin-top: 20px;">
-        <div>
-          <p class="label" style="font-size: .66rem;">CREDITING</p>
-          <p style="font-size: .88rem; line-height: 1.6; color: var(--muted); margin: 10px 0 0;">Multi-week TWAP, not the spot print, so a thin market cannot be pumped and burned at the top. Methodology fixed in the spec.</p>
-        </div>
-        <div>
-          <p class="label" style="font-size: .66rem;">CAPS</p>
-          <p style="font-size: .88rem; line-height: 1.6; color: var(--muted); margin: 10px 0 0;">Each chain's share of genesis is capped. No single chain and no single whale can claim an outsized share of genesis.</p>
-        </div>
-        <div>
-          <p class="label" style="font-size: .66rem;">NO LOCKS</p>
-          <p style="font-size: .88rem; line-height: 1.6; color: var(--muted); margin: 10px 0 0;">Genesis HRTH is liquid from block one. Staking is a choice, not a condition of claiming.</p>
-        </div>
-        <div>
-          <p class="label" style="font-size: .66rem;">FUNDING</p>
-          <p style="font-size: .88rem; line-height: 1.6; color: var(--muted); margin: 10px 0 0;">No VC, no presale. A disclosed, capped development allocation, vested over years, funds the work; exact share in the spec.</p>
-        </div>
-      </div>
+    <div class="notice" style="margin: 44px auto 0; max-width: 640px; padding: 22px 26px;">
+      <p class="label">Crediting</p>
+      <p style="font-size: .92rem; line-height: 1.65; color: var(--ink); margin: 12px 0 0;">Credit = amount burned × the coin's highest weekly average price over the period you continuously held it, from a published CoinMarketCap-based price log. Held through the whole fall — credited near the top; bought recently — credited at recent prices. 1 credit = 1 HRTH.</p>
+      <p style="font-family: var(--mono); font-size: .8rem; line-height: 1.8; color: var(--muted); margin: 14px 0 0;">1,000 WAVES held since March 2022 → peak week $49.71 → 49,710 HRTH<br>the same 1,000 WAVES bought in 2024 → $4.00 → 4,000 HRTH</p>
     </div>
-
-    <p class="lede">Burning does not set HRTH's price. The credit formula is an accounting rule for dividing genesis, not a valuation.</p>
   </div>
 </section>
 
@@ -536,7 +519,7 @@
         <p class="body" style="color: var(--muted); font-size: .9rem;">The chain, the token, and the incentives are real while the compute is borrowed.</p>
         <ul class="milestones">
           <li><span class="date">Jul 2026</span><span>Whitepaper v2, devnet fork, relay-enclave prototype, genesis burn spec published.</span></li>
-          <li><span class="date">Aug 2026</span><span>Genesis burn window opens on the ten source chains, burns credited at time-weighted average price. Incentivized testnet with staking, relay jobs, and the statistical audit committee, bonded verifiers staked on chain.</span></li>
+          <li><span class="date">Aug 2026</span><span>Genesis burn window opens on the ten source chains, burns credited by the published holding-based formula. Incentivized testnet with staking, relay jobs, and the statistical audit committee, bonded verifiers staked on chain.</span></li>
           <li><span class="date">Sep 2026</span><span>Burn window closes; genesis allocation snapshot published as a Merkle root anyone can recompute from the source chains.</span></li>
           <li><span class="date">Oct 2026</span><span>Mainnet launch: HRTH distributed to burners, USD Creds live, staking and non-custodial leasing open.</span></li>
           <li><span class="date">Nov–Dec 2026</span><span>OpenAI-compatible gateway and SDK; reputation-weighted routing at scale; public dashboard of organic USD revenue vs subsidy.</span></li>
@@ -652,31 +635,7 @@
         <button type="submit" class="btn btn-primary">Get notified</button>
       </form>
       <p id="waitlist-success" hidden="" style="font-size: .95rem; line-height: 1.6; margin: 20px 0 0;">You're on the list. See you at the fire. <span style="color: var(--accent);">◎</span></p>
-      <p id="waitlist-error" hidden="" style="font-size: .95rem; line-height: 1.6; margin: 20px 0 0;">Something went wrong — please try again in a minute.</p>
-      <script>
-      (function(){
-        var form = document.querySelector('.waitlist-form');
-        var ok = document.getElementById('waitlist-success');
-        var err = document.getElementById('waitlist-error');
-        form.addEventListener('submit', function(e){
-          e.preventDefault();
-          err.hidden = true;
-          var btn = form.querySelector('button');
-          btn.disabled = true;
-          fetch(form.action, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              email: form.email.value,
-              'bot-field': form['bot-field'].value
-            })
-          }).then(function(r){ return r.json(); }).then(function(d){
-            if (d.ok) { form.hidden = true; ok.hidden = false; }
-            else { err.hidden = false; btn.disabled = false; }
-          }).catch(function(){ err.hidden = false; btn.disabled = false; });
-        });
-      })();
-      </script>
+      <p id="waitlist-error" hidden="" style="font-size: .88rem; line-height: 1.6; margin: 14px 0 0; color: var(--accent-text);">Something went wrong — please try again in a minute.</p>
       <p class="micro" style="margin: 14px 0 0;">No spam. One mail when the window opens.</p>
     </div>
   </div>
@@ -698,6 +657,7 @@
     <nav aria-label="Footer" style="display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; font-size: .88rem; margin-top: 22px;">
       <a href="https://github.com/hearthchain" style="color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--hair-strong);">GitHub</a>
       <a href="hearth-wp.pdf" style="color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--hair-strong);">Whitepaper</a>
+      <a href="https://x.com/hearthchain" rel="me noopener" style="color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--hair-strong);">X</a>
     </nav>
   </div>
 </footer>
@@ -721,18 +681,29 @@
   (function () {
     var form = document.querySelector('form[name="waitlist"]');
     var ok = document.getElementById('waitlist-success');
-    if (!form || !ok) return;
+    var err = document.getElementById('waitlist-error');
+    if (!form || !ok || !err) return;
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      try {
-        fetch(form.getAttribute('action') || '/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(new FormData(form)).toString()
-        }).catch(function () {});
-      } catch (err) {}
-      form.style.display = 'none';
-      ok.removeAttribute('hidden');
+      var btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      err.setAttribute('hidden', '');
+      fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email.value, 'bot-field': form['bot-field'].value })
+      }).then(function (res) { return res.json(); }).then(function (data) {
+        if (data && data.ok === true) {
+          form.style.display = 'none';
+          ok.removeAttribute('hidden');
+        } else {
+          err.removeAttribute('hidden');
+          btn.disabled = false;
+        }
+      }).catch(function () {
+        err.removeAttribute('hidden');
+        btn.disabled = false;
+      });
     });
   })();
 </script>
