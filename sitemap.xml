@@ -11,6 +11,11 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
+    <loc>https://hearth.tech/whitepaper/</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
     <loc>https://hearth.tech/hearth-manifesto.pdf</loc>
     <lastmod>2026-07-06</lastmod>
   </url>
