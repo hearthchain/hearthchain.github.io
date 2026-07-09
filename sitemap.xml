@@ -5,4 +5,17 @@
     <lastmod>2026-07-09</lastmod>
     <changefreq>weekly</changefreq>
   </url>
+  <url>
+    <loc>https://hearth.tech/manifesto/</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://hearth.tech/hearth-manifesto.pdf</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
+    <loc>https://hearth.tech/hearth-wp.pdf</loc>
+    <lastmod>2026-07-03</lastmod>
+  </url>
 </urlset>
