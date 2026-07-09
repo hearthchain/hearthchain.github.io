@@ -1,0 +1,13 @@
+{
+  "name": "Hearth",
+  "short_name": "Hearth",
+  "description": "Proof-of-stake layer-1 where verified AI inference amplifies block production.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#FDFDFB",
+  "theme_color": "#FDFDFB",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
