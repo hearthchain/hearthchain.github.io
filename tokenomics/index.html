@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hearth Tokenomics: HRTH Emission, Creds, and the Retirement Split · Hearth</title>
+<meta name="description" content="The two-asset economy of Hearth: hard-capped HRTH emission, demand-following Cred issuance clamped to verified capacity, the retirement split, and the economics that secure Proof of Inference.">
+<link rel="canonical" href="https://hearth.tech/tokenomics/">
+<meta name="theme-color" content="#FDFDFB">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Hearth">
+<meta property="og:title" content="Hearth Tokenomics: HRTH Emission, Creds, and the Retirement Split">
+<meta property="og:description" content="The two-asset economy of Hearth: hard-capped HRTH emission, demand-following Cred issuance clamped to verified capacity, the retirement split, and the economics that secure Proof of Inference.">
+<meta property="og:url" content="https://hearth.tech/tokenomics/">
+<meta property="og:image" content="https://hearth.tech/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Hearth logo: a flame inside an open hearth frame, with the tagline Intelligence for everyone. Controlled by no one.">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@hearthchain">
+<meta name="twitter:title" content="Hearth Tokenomics: HRTH Emission, Creds, and the Retirement Split">
+<meta name="twitter:description" content="The two-asset economy of Hearth: hard-capped HRTH emission, demand-following Cred issuance clamped to verified capacity, the retirement split, and the economics that secure Proof of Inference.">
+<meta name="twitter:image" content="https://hearth.tech/og-image.png">
+
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "Hearth Tokenomics: HRTH Emission, Creds, and the Retirement Split",
+  "url": "https://hearth.tech/tokenomics/",
+  "image": "https://hearth.tech/og-image.png",
+  "description": "The two-asset economy of Hearth: hard-capped HRTH emission, demand-following Cred issuance clamped to verified capacity, the retirement split, and the economics that secure Proof of Inference.",
+  "isAccessibleForFree": true,
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hearth",
+    "url": "https://hearth.tech/",
+    "logo": "https://hearth.tech/icon-512.png",
+    "sameAs": ["https://x.com/hearthchain", "https://github.com/hearthchain"]
+  }
+}
+</script>
+<style>
+  :root {
+    --bg: #FDFDFB;
+    --panel: #F7F6F1;
+    --ink: #333333;
+    --muted: #666666;
+    --fire: #F7931A;
+    --accent: #C86F00;
+    --accent-text: #A85A00;
+    --hair: #E7E5E0;
+    --hair-strong: #CFCDC6;
+    --dark: #2A2723;
+    --dark-ink: #F1EDE6;
+    --serif: Georgia, 'Times New Roman', serif;
+    --sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --mono: Menlo, Consolas, 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--fire); color: #2E1A00; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  header.site { background: #FFFFFF; border-bottom: 1px solid var(--hair); }
+  .nav { max-width: 980px; margin: 0 auto; padding: 12px 22px; display: flex; align-items: center; gap: 20px; }
+  .wordmark { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); margin-right: auto; }
+  .wordmark .name { font-family: var(--serif); font-weight: normal; font-size: 1.25rem; }
+  .wordmark .ticker { font-family: var(--mono); font-size: .66rem; color: var(--muted); letter-spacing: .12em; margin-top: 4px; }
+  .nav .pdf { color: #4A4A4A; text-decoration: none; font-size: .86rem; }
+  .nav .pdf:hover { color: var(--accent-text); text-decoration: underline; }
+
+  main { max-width: 720px; margin: 0 auto; padding: clamp(36px, 6vw, 64px) 22px clamp(56px, 9vw, 100px); }
+
+  .kicker { font-family: var(--sans); font-weight: bold; font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-text); margin: 0; }
+  h1 { font-family: var(--serif); font-weight: normal; font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.2; letter-spacing: 0; margin: 16px 0 0; text-wrap: balance; }
+  .status { font-family: var(--mono); font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 14px 0 0; }
+
+  .abstract { margin: 28px 0 0; padding: 22px 26px; background: var(--panel); border: 1px solid var(--hair); border-radius: 4px; }
+  .abstract .lbl { font-family: var(--sans); font-weight: bold; font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-text); margin: 0 0 10px; }
+  .abstract p { margin: 0; font-size: .96rem; line-height: 1.68; }
+
+  .lede { margin: 20px 0 0; font-size: .98rem; color: var(--muted); }
+
+  nav.toc { margin: 32px 0 0; padding: 20px 24px; border: 1px solid var(--hair); border-radius: 4px; }
+  nav.toc .lbl { font-family: var(--sans); font-weight: bold; font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-text); margin: 0 0 12px; }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; counter-reset: none; font-size: .92rem; line-height: 1.5; }
+  nav.toc li { margin: 6px 0; display: flex; gap: 10px; }
+  nav.toc .n { font-family: var(--mono); font-size: .8rem; color: var(--accent-text); flex: none; min-width: 2.4em; }
+  nav.toc a { color: var(--ink); text-decoration: none; }
+  nav.toc a:hover { color: var(--accent-text); text-decoration: underline; }
+
+  .rule { border: 0; border-top: 1px solid var(--hair); margin: clamp(32px, 5vw, 44px) 0; }
+
+  article h2 { font-family: var(--serif); font-weight: normal; font-size: clamp(1.45rem, 3.6vw, 1.9rem); line-height: 1.25; margin: clamp(46px, 6vw, 64px) 0 0; scroll-margin-top: 20px; text-wrap: balance; }
+  article h3 { font-family: var(--serif); font-weight: normal; font-size: clamp(1.15rem, 2.6vw, 1.35rem); line-height: 1.3; margin: 34px 0 0; scroll-margin-top: 20px; }
+  article h2 .secno, article h3 .secno { color: var(--accent-text); font-family: var(--mono); font-size: .62em; font-style: normal; margin-right: .5em; vertical-align: baseline; }
+  article p { margin: 1.05em 0 0; }
+  article h2 + p, article h3 + p { margin-top: .7em; }
+  article em { font-style: italic; }
+  article strong { font-weight: bold; color: var(--ink); }
+  article a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+  article a:hover { color: var(--accent); }
+  a.xref, a.cite { text-decoration: none; white-space: nowrap; }
+  a.xref:hover, a.cite:hover { text-decoration: underline; }
+  a.cite { font-variant-numeric: tabular-nums; }
+
+  article ul, article ol { margin: 1.05em 0 0; padding-left: 1.5em; }
+  article li { margin: 7px 0; }
+
+  var { font-family: var(--serif); font-style: italic; }
+  .eq { font-family: var(--serif); font-style: italic; text-align: center; margin: 22px 0; padding: 6px 0; overflow-x: auto; line-height: 2; }
+  .eq var { font-style: italic; }
+  .eq .up { font-style: normal; }
+
+  .thm { margin: 24px 0 0; padding: 18px 22px; border: 1px solid var(--hair-strong); border-left: 3px solid var(--fire); border-radius: 4px; background: #FFFDFA; }
+  .thm .head { font-weight: bold; }
+  .thm p { margin: 0; }
+  .thm .eq { margin: 16px 0; }
+
+  .tablewrap { margin: 26px 0 0; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .85rem; line-height: 1.5; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--hair); }
+  thead th { border-bottom: 2px solid var(--hair-strong); font-family: var(--sans); font-weight: bold; color: var(--muted); font-size: .78rem; }
+  tbody tr:nth-child(even) td { background: #FBFAF5; }
+  .tabcaption { font-family: var(--sans); font-size: .82rem; color: var(--muted); margin-top: 10px; line-height: 1.55; }
+  .tabcaption .cn { font-weight: bold; color: var(--accent-text); }
+
+  .closing { margin: clamp(46px, 6vw, 64px) 0 0; padding: 20px 24px; border: 1px solid var(--hair); border-radius: 4px; background: var(--panel); font-style: italic; font-size: .92rem; line-height: 1.68; }
+
+  .refs { margin: 20px 0 0; padding: 0; list-style: none; counter-reset: none; font-size: .86rem; line-height: 1.6; }
+  .refs li { display: flex; gap: 12px; margin: 12px 0; }
+  .refs .rn { font-family: var(--mono); font-size: .8rem; color: var(--accent-text); flex: none; min-width: 2.6em; text-align: right; }
+  .refs a { word-break: break-word; }
+
+  footer.site-footer { border-top: 1px solid var(--hair); background: var(--bg); }
+  .footer-inner { max-width: 720px; margin: 0 auto; padding: 40px 22px 56px; text-align: center; }
+  .footer-inner .name { font-family: var(--serif); font-size: 1.2rem; margin: 12px 0 0; }
+  .footer-nav { display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; font-size: .88rem; margin-top: 20px; }
+  .footer-nav a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--hair-strong); }
+  .footer-nav a:hover { color: var(--accent-text); }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav" aria-label="Main">
+    <a class="wordmark" href="/" aria-label="Hearth home">
+      <svg viewBox="0 0 64 64" width="22" height="22" role="img" aria-label="Hearth logo: a flame inside an open hearth frame" style="flex: none; display: block;">
+        <g fill="none" stroke="var(--accent)" stroke-width="4.5" stroke-linecap="round">
+          <path d="M7 13 H57"></path><path d="M13 13 V55"></path><path d="M51 13 V55"></path><path d="M7 55 H57"></path>
+        </g>
+        <path fill="var(--fire)" d="M32 26 C26 34 22.8 40 26.2 46.2 A6.9 6.9 0 0 0 37.8 46.2 C41.2 40 38 34 32 26 Z"></path>
+      </svg>
+      <span class="name">Hearth</span>
+      <span class="ticker">HRTH</span>
+    </a>
+    <a class="pdf" href="/hearth-tokenomics.pdf">Download PDF</a>
+  </nav>
+</header>
+
+<main>
+  <article>
+    <p class="kicker">Tokenomics</p>
+    <h1>Hearth Tokenomics<br>HRTH Emission, Creds, and the Retirement Split</h1>
+    <p class="status">Draft v2 &#183; illustrative parameters, load-bearing formulas</p>
+
+    <div class="abstract">
+      <p class="lbl">Abstract</p>
+      <p>Hearth runs a two-asset economy that separates the token securing the network from the credits pricing its output. HRTH is hard-capped and scarcity-shaped: a 5% genesis premine plus a continuously disinflationary, back-weighted block reward that keeps early float scarce while emission asymptotes to a fixed cap over decades. Creds are per-model, USD-priced inference credits issued algorithmically to HRTH stakers, each model's issuance following measured demand and clamped every epoch to its verified servable capacity. When a Cred is spent it is retired and its value split three ways, 60% burned, 30% to the serving node, 10% to the verifier pool, and only the burned fraction counts toward consensus, which decouples node cash flow from the forging signal and keeps self-dealing loss-making. Because the burn is the sole deterrent, the node share is not a free constant but a governed function of network maturity, launched low and raised toward a deterrence-bounded ceiling as measured usage deepens. The formulas are the specification; all constants are illustrative and left for governance and genesis to set.</p>
+    </div>
+
+    <p class="lede">This document specifies the two-asset economy of Hearth: the HRTH emission curve, Cred issuance, the retirement split, the forging-boost mechanism, and the node economics that tie them together. Constants marked (genesis) or (governance) are tunable; the formulas are the specification. All worked figures are illustrative and self-consistent with the parameters stated in <a class="xref" href="#sec-params">&#167;8</a>.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <p class="lbl">Contents</p>
+      <ol>
+        <li><span class="n">1</span><a href="#sec-assets">The two assets</a></li>
+        <li><span class="n">2</span><a href="#sec-emission">HRTH emission, scarcity-shaped, hard-capped</a></li>
+        <li><span class="n">3</span><a href="#sec-cred">Cred issuance, algorithmic, demand-following, per-block</a></li>
+        <li><span class="n">4</span><a href="#sec-retire">Cred retirement, the split</a></li>
+        <li><span class="n">5</span><a href="#sec-node">Node economics and cost coverage</a></li>
+        <li><span class="n">6</span><a href="#sec-loop">The economic loop</a></li>
+        <li><span class="n">7</span><a href="#sec-security">Forging boost and self-dealing security</a></li>
+        <li><span class="n">8</span><a href="#sec-params">Parameter reference</a></li>
+        <li><span class="n">9</span><a href="#sec-rail">Optional: the stablecoin settlement rail and HRTH buyback</a></li>
+        <li><span class="n">&#8226;</span><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <hr class="rule">
+
+    <h2 id="sec-assets"><span class="secno">1</span>The two assets</h2>
+    <p>HRTH is the network token: a hard-capped, scarcity-shaped asset that is staked to forge, spent as gas, used in governance, and issued as the reward for verified work. It secures the chain and funds the bootstrap subsidy. On proven misbehavior it is suspended, never confiscated.</p>
+    <p>Creds are per-model inference credits (per-model from Phase 2 onward, a single Cred in Phase 1): USD-priced, capacity-backed, retired on use. One Cred-<var>m</var> redeems for one standardized unit of verified output from pinned model <var>m</var>. Creds are emitted to HRTH staked for Creds as a capacity-weighted basket, the yield that makes that position worthwhile, and they carry no peg; each Cred's market price is the discovered price of that model's verified inference.</p>
+    <p>The design separates the asset that secures the network (HRTH, scarce and held) from the assets that price its output (Creds, elastic and spent).</p>
+    <p>The separation is not a stylistic choice but a provable requirement. A single-token proof-of-stake economy cannot hold service prices stable without letting validator rewards grow without bound; Kiayias, Lazos, and Penna prove this and show that a two-token design, one asset staked by validators and another spent by users, attains viability, decentralization, price stability, and on-chain feasibility at once <a class="cite" href="#ref-1">[1]</a>. Hearth's HRTH/Cred split instantiates exactly that separation, HRTH the staked and secured asset, Creds the spent and priced one.</p>
+    <p>Burn-on-use service credits are otherwise the established DePIN pattern: Helium's USD-pegged Data Credits <a class="cite" href="#ref-2">[2]</a>, Render's render credits <a class="cite" href="#ref-3">[3]</a>, and Internet Computer cycles <a class="cite" href="#ref-4">[4]</a> are fiat-denominated, retired on use, and insulate consumers from network-token volatility, at the cost of an administered peg. Creds keep the retire-on-use discipline but depart in two ways. They carry no peg, so each model's Cred price is discovered on the market rather than administered, and they are issued to stakers as the yield on HRTH under a verified-capacity clamp rather than minted by burning the network token. The burn therefore sits at retirement, where it prices throughput and deters self-dealing (<a class="xref" href="#sec-retire">&#167;4</a>, <a class="xref" href="#sec-security">&#167;7</a>), not at issuance <a class="cite" href="#ref-5">[5]</a>.</p>
+    <p>Everything below makes that split precise.</p>
+
+    <h2 id="sec-emission"><span class="secno">2</span>HRTH emission, scarcity-shaped, hard-capped</h2>
+    <p>HRTH has a hard cap, a tiny genesis premine, and a continuously disinflationary block reward. Unlike Bitcoin's front-loaded schedule, the curve is deliberately back-weighted in its early years: with only 5% minted at genesis, a front-loaded emission would flood the market and destroy the scarcity the asset needs while it bootstraps. The curve instead releases slowly, so HRTH stays scarce through the first years and disinflates toward the cap over decades.</p>
+
+    <h3 id="sub-supply"><span class="secno">2.1</span>Supply structure</h3>
+    <div class="eq"><var>C</var><sub>max</sub> = <var>P</var><sub>gen</sub> + <var>C</var><sub>emit</sub>, &nbsp;&nbsp;&nbsp; <var>P</var><sub>gen</sub> = 0.05&#8201;<var>C</var><sub>max</sub></div>
+    <ul>
+      <li><var>P</var><sub>gen</sub>, genesis premine, 5% of supply. The only HRTH in existence at launch, split between the fallen-chains burn claim (the public genesis distribution), a DAO treasury, and a vested team allocation. No VC, no presale.</li>
+      <li><var>C</var><sub>emit</sub>, 95% of supply, emitted as the forging reward, block by block, over decades. This is the fair-launch core: almost all HRTH is earned by securing the network, not distributed at genesis.</li>
+    </ul>
+    <p>Illustrative split of the 5% premine: fallen-chains burn claim 3%, DAO treasury 1%, team (vested) 1%.</p>
+    <p>The burn claim is earned, not sold. During a genesis window, holders of ten faded L1 chains provably burn their tokens on the home chains, a plain transfer to a published, provably unspendable burn address, and bind the source address to a Hearth address with a separately signed message (a transfer memo on chains whose wallets cannot sign bare messages). Each burn's credit is computed deterministically from public chain data: the burned amount is split into min-balance holding layers reconstructed from transfer history, each layer priced at the maximum weekly-average USD price of its token since the layer formed, and the layer credits summed, then published in a reproducible snapshot carrying a Merkle root and an independent recompute script. The weekly-average price is the credit formula's input, not a promised value: loyalty to the network converts to a share of it, credits convert one-to-one into HRTH at launch, and no floor or dollar value on the result is implied. The full mechanics, the chain list, and the dispute process are specified in the genesis burn specification and implemented by the genesis application.</p>
+    <p>Because the claim converts one-to-one and turnout is unknown in advance, the genesis supply floats with participation, so the absolute cap is derived at snapshot freeze rather than preset. Writing <var>B</var> for the total credits at freeze, the burn claim is pinned at 3% of supply, so <var>C</var><sub>max</sub> = <var>B</var> / 0.03, and the DAO (1%) and team (1%) allocations follow the same fixed proportions. Every proportion, every formula, and the emission curve's shape is a turnout-independent genesis constant; the worked figures throughout use the illustrative <var>C</var><sub>max</sub> = 100M, which corresponds to <var>B</var> = 3M credits.</p>
+
+    <h3 id="sub-curve"><span class="secno">2.2</span>The emission curve</h3>
+    <p>The block reward decays continuously, every block pays slightly less than the last, halving on a fixed cadence <var>T</var><sub>1/2</sub>:</p>
+    <div class="eq"><var>R</var>(<var>h</var>) = <var>R</var><sub>0</sub> &#183; 2<sup>&#8722;<var>h</var>/<var>H</var><sub>1/2</sub></sup>, &nbsp;&nbsp;&nbsp; <var>R</var><sub>0</sub> = <var>C</var><sub>emit</sub>&#8201;<span class="up">ln</span>&#8201;2 / <var>H</var><sub>1/2</sub></div>
+    <p>where <var>H</var><sub>1/2</sub> = <var>T</var><sub>1/2</sub> &#183; <var>N</var><sub>yr</sub> is the reward half-life in blocks, with <var>N</var><sub>yr</sub> the blocks per year (525,960 at 60 s blocks). The normalization makes total emission &#8747; <var>R</var>(<var>h</var>)&#8201;d<var>h</var> = <var>R</var><sub>0</sub> &#183; <var>H</var><sub>1/2</sub> / <span class="up">ln</span>&#8201;2 = <var>C</var><sub>emit</sub>, so supply asymptotes to the cap:</p>
+    <div class="eq"><var>S</var>(<var>t</var>) = <var>P</var><sub>gen</sub> + <var>C</var><sub>emit</sub>(1 &#8722; 2<sup>&#8722;<var>t</var>/<var>T</var><sub>1/2</sub></sup>) &#10230; <var>C</var><sub>max</sub></div>
+    <p>Each block's HRTH reward is paid to that block's forger; the continuous Cred yield to stakers is separate (<a class="xref" href="#sub-blockdist">&#167;3.3</a>).</p>
+
+    <h3 id="sub-whynot"><span class="secno">2.3</span>Why not a Bitcoin-style front-loaded halving</h3>
+    <p>Bitcoin front-loads: its first four-year era mints half of all coins. Applied here (95M over a 4-year first era) that is &#8776;11.9M HRTH in year one against a 5M genesis float, a 238% first-year expansion, with circulating supply already &#8776;17% of cap by year one (a flat first-era mint; the continuous-half-life 4-year row in the table below gives 20%, the two being idealizations of the same schedule). That is the opposite of scarce. The half-life is therefore lengthened until early float is genuinely scarce:</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>reward half-life <var>T</var><sub>1/2</sub></th><th>circ. y1</th><th>y2</th><th>y4</th><th>y8</th><th>y16</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>4 yr (Bitcoin-like)</td><td>20%</td><td>33%</td><td>52%</td><td>76%</td><td>94%</td></tr>
+          <tr><td>8 yr</td><td>13%</td><td>20%</td><td>33%</td><td>52%</td><td>76%</td></tr>
+          <tr><td>10 yr (chosen)</td><td>11%</td><td>17%</td><td>28%</td><td>45%</td><td>69%</td></tr>
+          <tr><td>16 yr</td><td>9%</td><td>13%</td><td>20%</td><td>33%</td><td>52%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tabcaption"><span class="cn">Table 1:</span> Circulating supply as a fraction of cap under alternative reward half-lives.</p>
+
+    <h3 id="sub-schedule"><span class="secno">2.4</span>Instantiated schedule</h3>
+    <p>With <var>C</var><sub>max</sub> = 100M, <var>P</var><sub>gen</sub> = 5M (5%), <var>C</var><sub>emit</sub> = 95M, &#964;<sub>b</sub> = 60 s, and <var>T</var><sub>1/2</sub> = 10 years (genesis), the initial reward is <var>R</var><sub>0</sub> &#8776; 12.52 HRTH/block:</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Year</th><th>Reward/block</th><th>Emitted that year</th><th>Circulating supply</th><th>% of cap</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0 (genesis)</td><td>&#8211;</td><td>&#8211;</td><td>5.00M</td><td>5.0%</td></tr>
+          <tr><td>1</td><td>11.68</td><td>6.36M</td><td>11.36M</td><td>11.4%</td></tr>
+          <tr><td>2</td><td>10.90</td><td>5.94M</td><td>17.30M</td><td>17.3%</td></tr>
+          <tr><td>4</td><td>9.49</td><td>5.17M</td><td>28.00M</td><td>28.0%</td></tr>
+          <tr><td>8</td><td>7.19</td><td>3.92M</td><td>45.44M</td><td>45.4%</td></tr>
+          <tr><td>12</td><td>5.45</td><td>2.97M</td><td>58.65M</td><td>58.6%</td></tr>
+          <tr><td>20</td><td>3.13</td><td>1.70M</td><td>76.25M</td><td>76.2%</td></tr>
+          <tr><td>40</td><td>0.78</td><td>0.43M</td><td>94.06M</td><td>94.1%</td></tr>
+          <tr><td>&#8734;</td><td>0</td><td>0</td><td>100M</td><td>100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tabcaption"><span class="cn">Table 2:</span> HRTH emission, scarcity-shaped, 10-year half-life, 5% premine (illustrative).</p>
+    <p>Only &#8776;11% of supply circulates after year one and &#8776;28% after year four, the intended scarcity, while the year-one forging pool (&#8776;6.4M HRTH, &#8776; $1.27M at $0.20) is ample for security (<a class="xref" href="#sec-security">&#167;7</a>). Because emitted HRTH is earned by stakers, who lock it to keep earning, the liquid float is scarcer still. <var>T</var><sub>1/2</sub> is a genesis parameter; a shorter half-life releases faster, a longer one is scarcer for longer.</p>
+
+    <h2 id="sec-cred"><span class="secno">3</span>Cred issuance, algorithmic, demand-following, per-block</h2>
+    <p>Phase 1 runs a single Cred, one USD-denominated, capacity-backed, burn-on-use credit, because relaying to a hosted aggregator means no per-model self-hosted capacity backs distinct claims and no network-discovered per-model price exists. The per-model index <var>m</var> below is therefore Phase-2 machinery: in Phase 1 it ranges over a single element, and every formula applies unchanged to the one Cred. Per-model Creds phase in model by model in Phase 2 as self-hosted verified capacity comes online, with the single Cred persisting as the settlement numeraire.</p>
+    <p>Creds are not on a fixed curve and are not voted on each epoch. Each model's Cred issuance is set by an algorithm from the previous epoch's consumption; the DAO's only role is to seed the initial supply and set the controller's constants. Issuance is then streamed to stakers every block.</p>
+
+    <h3 id="sub-epoch"><span class="secno">3.1</span>The epoch and the control signal</h3>
+    <p>An epoch is two weeks, <var>N</var><sub>ep</sub> = 20,160 blocks at 60-second block time. For model <var>m</var> in epoch <var>E</var>, the demand signal <var>C</var><sub>m</sub>(<var>E</var>) is the burned, payer-gated value of that model's retirements, normalized back to Cred units:</p>
+    <div class="eq"><var>C</var><sub>m</sub>(<var>E</var>) = ( <span class="up">burned payer-gated USD value of model-<var>m</var> retirements in <var>E</var></span> ) / ( &#966;<sub>b</sub>&#8201;<var>p&#772;</var><sub>m</sub>(<var>E</var>) )</div>
+    <p>with <var>p&#772;</var><sub>m</sub>(<var>E</var>) the epoch's time-weighted average Cred-<var>m</var> price. Since each gated retirement burns exactly &#966;<sub>b</sub> of its value, the normalization makes <var>C</var><sub>m</sub>(<var>E</var>) the full count of payer-gated Creds retired in the epoch, so issuance still replaces consumption one-for-one; what changes is what cannot move the signal: retirements that never passed the payer gate, and the recycled node and verifier shares, contribute nothing. This closes the loop with <a class="xref" href="#sub-burnrule">&#167;4.1</a>: consensus weight and Cred emission read the same observable, the burned gated fraction, so a self-dealer buys neither with the share it recovers.</p>
+
+    <h3 id="sub-controller"><span class="secno">3.2</span>The algorithmic controller</h3>
+    <p>Issuance for the next epoch targets consumption, so Cred supply neither starves nor accumulates. The controller smooths the signal and clamps it to verified capacity &#954;<sub>m</sub><sup>cap</sup>:</p>
+    <div class="eq"><var>&#264;</var><sub>m</sub>(<var>E</var>) = (1 &#8722; &#955;)&#8201;<var>&#264;</var><sub>m</sub>(<var>E</var> &#8722; 1) + &#955;&#8201;<var>C</var><sub>m</sub>(<var>E</var>)</div>
+    <div class="eq"><var>Q</var><sub>m</sub>(<var>E</var> + 1) = <span class="up">min</span>((1 + &#947;)&#8201;<var>&#264;</var><sub>m</sub>(<var>E</var>), &nbsp; &#954;<sub>m</sub><sup>cap</sup>(<var>E</var> + 1))</div>
+    <ul>
+      <li>&#955; &#8712; (0, 1], EMA rate (controller constant, DAO-set once) damping epoch-to-epoch swings.</li>
+      <li>&#947; &#8805; 0, a small growth allowance letting supply lead rising demand.</li>
+      <li>&#954;<sub>m</sub><sup>cap</sup>(<var>E</var> + 1), model <var>m</var>'s verified servable capacity, the protocol-enforced ceiling.</li>
+    </ul>
+    <p>This is a closed loop with no per-epoch governance action: given the constants, <var>Q</var><sub>m</sub>(<var>E</var> + 1) is a deterministic function of measured on-chain consumption. <var>Q</var><sub>m</sub>(0), the initial supply at a model's listing, is the one DAO-set quantity, the seed the controller then adjusts automatically.</p>
+
+    <h3 id="sub-blockdist"><span class="secno">3.3</span>The capacity ceiling and per-block distribution</h3>
+    <p>The <span class="up">min</span>(&#183;, &#954;<sub>m</sub><sup>cap</sup>) is protocol-enforced: no controller path can mint a Cred faster than its model's verified capacity, so &#8220;capacity-backed&#8221; holds mechanically at every epoch. Thin-demand models converge to low issuance automatically.</p>
+    <p>The epoch's issuance is streamed to stakers every block, not dropped at epoch end. Each block emits</p>
+    <div class="eq"><var>q</var><sub>m</sub> = <var>Q</var><sub>m</sub>(<var>E</var> + 1) / <var>N</var><sub>ep</sub></div>
+    <p>Creds of model <var>m</var>, distributed pro-rata to HRTH locked in the Cred-staking contract (position 2, <a class="xref" href="#sub-threepositions">&#167;6.1</a>). Cred-stakers thus receive a continuous, capacity-weighted Cred basket, the smooth USD-denominated yield on HRTH staked for Creds (<a class="xref" href="#sec-loop">&#167;6</a>), rather than a lumpy periodic payout.</p>
+
+    <h2 id="sec-retire"><span class="secno">4</span>Cred retirement, the split</h2>
+    <p>When a Cred of USD value <var>p</var> is spent, it is retired and its value divided three ways:</p>
+    <div class="eq"><var>p</var> = &#966;<sub>b</sub>&#8201;<var>p</var> <span class="up">(burned)</span> + &#966;<sub>n</sub>&#8201;<var>p</var> <span class="up">(serving node)</span> + &#966;<sub>v</sub>&#8201;<var>p</var> <span class="up">(verifier pool)</span>, &nbsp;&nbsp; &#966;<sub>b</sub> + &#966;<sub>n</sub> + &#966;<sub>v</sub> = 1</div>
+    <p>Launch values (governance): &#966;<sub>b</sub> = 0.60, &#966;<sub>n</sub> = 0.30, &#966;<sub>v</sub> = 0.10.</p>
+    <ul>
+      <li>Burn &#966;<sub>b</sub>, permanently removed. Creates scarcity, ties Cred float to throughput, and is the self-dealing deterrent (<a class="xref" href="#sec-security">&#167;7</a>).</li>
+      <li>Node &#966;<sub>n</sub>, paid to the serving node as immediate USD-denominated cash flow, the operator's answer to fiat-denominated running costs (<a class="xref" href="#sec-node">&#167;5</a>).</li>
+      <li>Verifier &#966;<sub>v</sub>, funds the audit committee that re-checks sampled jobs.</li>
+    </ul>
+
+    <h3 id="sub-burnrule"><span class="secno">4.1</span>The critical rule: only the burned fraction counts toward consensus</h3>
+    <p>Both workBoost and capacity-weighted Cred emission count only the burned, payer-gated fraction &#966;<sub>b</sub> &#183; <var>p</var>, the demand signal defined in <a class="xref" href="#sub-epoch">&#167;3.1</a>, never the node or verifier share. This quarantines consensus from the node payout: the 30% handed to the node is round-tripped back to a self-dealer and so contributes nothing to deterrence, but because it also contributes nothing to workBoost, the node share can be paid without weakening the consensus signal at all. Node cash flow and consensus integrity are thereby decoupled.</p>
+
+    <h2 id="sec-node"><span class="secno">5</span>Node economics and cost coverage</h2>
+    <p>A node's cost is denominated in fiat (power, amortized hardware); its Cred-share revenue is USD-denominated but usage-dependent. Coverage is the market's job at the margin and the subsidy's job in bootstrap, never a reason to enlarge &#966;<sub>n</sub> (which would break <a class="xref" href="#sec-security">&#167;7</a>).</p>
+
+    <h3 id="sub-perjob"><span class="secno">5.1</span>Per-job accounting</h3>
+    <p>For a job of price <var>p</var> (USD) on a node with cost <var>c</var><sub>job</sub>:</p>
+    <div class="eq"><span class="up">revenue</span><sub class="up">node</sub> = &#966;<sub>n</sub>&#8201;<var>p</var> + &#961; = 0.30&#8201;<var>p</var> + &#961;</div>
+    <p>where &#961; is the HRTH issuance reward for the verified job (<a class="xref" href="#sec-emission">&#167;2</a> emission, distributed per work). Serving is elective: a node serves only when <span class="up">revenue</span><sub class="up">node</sub> &#8805; <var>c</var><sub>job</sub>, so entry/exit discovers the floor and the protocol never measures unobservable cost.</p>
+
+    <h3 id="sub-breakeven"><span class="secno">5.2</span>Break-even Cred price</h3>
+    <p>The price at which the node share alone covers cost (&#961; = 0):</p>
+    <div class="eq"><var>p</var><sup>&#8727;</sup> = <var>c</var><sub>job</sub> / &#966;<sub>n</sub></div>
+    <p>Phase-2 worked figure. A self-hosted FP8 node at &#8776;$2.5/GPU-hr sustaining &#8776;4,000 tok/s produces 4000 &#215; 3600 = 1.44 &#215; 10<sup>7</sup> output tokens per GPU-hour, so its cost is $2.5 / (1.44 &#215; 10<sup>7</sup> tok) &#8776; $0.174 per 1M output tokens (&#8776;$0.17), giving</p>
+    <div class="eq"><var>p</var><sup>&#8727;</sup> = $0.174 / 0.30 &#8776; $0.58 / <span class="up">1M tokens</span></div>
+    <p>The mid-2026 market for the same open-weights 70B spans $0.12&#8211;0.90 / 1M, so take one Cred's standardized unit to be 1M output tokens, matching these $/1M figures. Above &#8776;$0.58 the node profits on the Cred share alone and HRTH is pure upside; below it, HRTH issuance bridges the per-unit shortfall, worked in <a class="xref" href="#sub-subsidysizing">&#167;5.3</a>. Positioning: verified inference at commodity price, not cheaper than the cheapest unverified host, but proven and un-deprecatable.</p>
+
+    <h3 id="sub-subsidysizing"><span class="secno">5.3</span>Subsidy sizing</h3>
+    <p>The bridge is HRTH, not a bigger Cred slice. Size per-epoch emission so that, at target utilization, the median honest node is whole per standardized unit (one Cred, 1M output tokens):</p>
+    <div class="eq"><span class="up">E</span>[&#961;] &#8805; <var>c</var><sub>u</sub> &#8722; &#966;<sub>n</sub>&#8201;<var>p</var><sub>market</sub>, &nbsp;&nbsp; <var>c</var><sub>u</sub> &#8776; $0.174 <span class="up">per unit</span></div>
+    <p>At a mid-band Cred price <var>p</var><sub>market</sub> = $0.30, the per-unit gap is 0.174 &#8722; 0.30 &#215; 0.30 = 0.174 &#8722; 0.09 &#8776; $0.084 per 1M tokens, so a 1k-token job, one-thousandth of a unit, leaves an &#8776; $10<sup>&#8722;4</sup> shortfall for HRTH issuance to cover. The gap shrinks as the Cred price rises toward <var>p</var><sup>&#8727;</sup> and vanishes above it; the organic-revenue-to-subsidy ratio (<a class="xref" href="#sec-loop">&#167;6</a>) signals when to taper. Because the year-one pool (&#8776;6.4M HRTH) dwarfs the aggregate gap at any realistic early volume, demand, not the subsidy, is the binding constraint, the intended bootstrap condition.</p>
+
+    <h3 id="sub-phase1"><span class="secno">5.4</span>Phase-1 contrast</h3>
+    <p>In Phase 1 (relay), <var>c</var><sub>job</sub> is fiat paid to an aggregator at provider list price (&#8776;$5/1M, non-discountable), roughly 29&#215; the Phase-2 cost. No split or subsidy makes relay sustainably profitable; Phase 1 is a deliberate loss-leader whose purpose is to stand up the chain, token, and demand before self-hosted capacity (Phase 2) drops the cost floor into the coverable range.</p>
+
+    <h2 id="sec-loop"><span class="secno">6</span>The economic loop</h2>
+
+    <h3 id="sub-threepositions"><span class="secno">6.1</span>Three positions for an HRTH holder</h3>
+    <p>An HRTH holder chooses one of three mutually exclusive positions per coin.</p>
+    <ol>
+      <li>Hold. HRTH on a plain balance earns nothing, no Cred yield and no emission; holding is exposure to the asset, not a claim on network cash flow.</li>
+      <li>Stake for Creds. HRTH locked in the Cred-staking contract earns the continuous Cred stream of <a class="xref" href="#sub-blockdist">&#167;3.3</a> (in Phase 1 the single Cred, later the capacity-weighted per-model basket), pro-rata to locked HRTH, and earns no HRTH emission.</li>
+      <li>Validate, or lease to a validator. HRTH used as generating balance, owned or leased-in under a non-custodial lease with the lessor paid an agreed share of the validator's rewards, earns the HRTH block reward of <a class="xref" href="#sec-emission">&#167;2</a> (amplified by workBoost for serving nodes), and earns no Creds.</li>
+    </ol>
+    <p>The exclusivity is load-bearing because the two yields price different things: Creds price inference demand, emission prices security provision. Forcing the choice creates an internal opportunity-cost equilibrium, with stake flowing toward whichever yield is undervalued until the two risk-adjusted returns meet, which is the coupling loop below stated at the level of a single holder's decision. It also partitions the security analysis: workBoost and the forging pool concern only position 3, the Cred-issuance stream only position 2, so an attacker must split capital to farm both channels.</p>
+    <p>Entering position 2 or 3 is subject to an activation window: the stake counts, for the Cred stream or as generating balance, only at the minimum balance held over the preceding <var>N</var><sub>act</sub> blocks, so freshly moved coin cannot instantly claim either yield. Exiting is immediate, the coin is spendable at once and simply stops earning (&#964;<sub>unb</sub> = 0). At the genesis value <var>N</var><sub>act</sub> = 1000 blocks (&#8776; 17 h at 60 s), repositioning friction is bounded by hours, so the self-correction of <a class="xref" href="#sub-couplingloop">&#167;6.2</a> operates on a day timescale, not an unbonding-queue timescale.</p>
+
+    <h3 id="sub-couplingloop"><span class="secno">6.2</span>The coupling loop</h3>
+    <p>There is no explicit Cred-to-HRTH peg. The two assets are coupled through staking, and the coupling self-corrects:</p>
+    <ol>
+      <li>Demand: users pay USD for Creds (any stablecoin, swapped to the model's Cred at point of sale, <a class="xref" href="#sec-rail">&#167;9</a>). Real inference demand becomes Cred purchases.</li>
+      <li>Yield: because Creds are emitted to Cred-stakers (<a class="xref" href="#sub-blockdist">&#167;3.3</a>), Cred demand is the USD yield on HRTH staked for Creds.</li>
+      <li>Value: a real USD yield makes staking HRTH worthwhile, creating HRTH demand.</li>
+      <li>Supply floor: validators must hold generating balance &#8805; <var>b</var><sub>min</sub> (owned or leased-in) to serve, so HRTH's value sets the serving floor: if HRTH falls, serving turns unprofitable, nodes exit, Cred scarcity lifts the price &#8594; yield &#8594; HRTH value, and serving resumes.</li>
+    </ol>
+    <p>The single health metric governance watches is the ratio of organic USD Cred revenue to HRTH subsidy value: rising, the market is self-sustaining; flat, the network is renting volume. The loop is reflexive with lag and degrades gracefully: Creds stay redeemable at true cost, so there is no peg to break.</p>
+    <p>Tagline: Creds exist to make HRTH staking viable.</p>
+
+    <h2 id="sec-security"><span class="secno">7</span>Forging boost and self-dealing security</h2>
+    <p>The quantitative security claims of this section are conditional on two mechanisms specified in the Hearth whitepaper and used here as a trust root: the payer gate, so only retirements paid with external funds through the gateway count, and verification, so a retired Cred corresponds to real, attested output, with fraud detected with near-certainty at the audit sampling rate. Every payer-gated quantity in this document (<var>C</var><sub>m</sub>(<var>E</var>), <var>r</var><sub>i</sub>(<var>E</var>), <var>k</var><sub>V</sub>, <var>D</var>) inherits these assumptions.</p>
+
+    <h3 id="sub-workboost"><span class="secno">7.1</span>workBoost (Proof of Inference)</h3>
+    <p>Verified work amplifies a staker's forging weight, capped, never replacing stake. For node <var>i</var> with generating balance <var>b</var><sub>i</sub> (owned plus leased-in stake):</p>
+    <div class="eq"><var>b</var><sub>eff</sub>(<var>i</var>) = <var>b</var><sub>i</sub>&#8201;(1 + workBoost<sub>i</sub>), &nbsp;&nbsp; <var>b</var><sub>i</sub> &#8805; <var>b</var><sub>min</sub></div>
+    <p>Let <var>r</var><sub>i</sub>(<var>E</var>) be the USD value of the burned fraction of payer-gated Creds retired on node <var>i</var>'s verified jobs in epoch <var>E</var> (<a class="xref" href="#sub-burnrule">&#167;4.1</a>). Smooth it with an exponential moving average:</p>
+    <div class="eq"><var>w</var><sub>i</sub>(<var>E</var>) = (1 &#8722; &#945;)&#8201;<var>w</var><sub>i</sub>(<var>E</var> &#8722; 1) + &#945;&#8201;<var>r</var><sub>i</sub>(<var>E</var>)</div>
+    <p>Fix a governance-set dust floor &#964;<sub>w</sub> &gt; 0 and let <var>S</var>(<var>E</var>) = {&#8202;<var>j</var> : <var>w</var><sub>j</sub>(<var>E</var>) &#8805; &#964;<sub>w</sub>, <var>b</var><sub>j</sub> &#8805; <var>b</var><sub>min</sub>&#8202;} be the eligible set. Normalize against the stake-weighted median work level</p>
+    <div class="eq"><var>m</var>(<var>E</var>) = <span class="up">arg&nbsp;max</span><sub><var>w</var> &#8805; 0</sub> {&#8202; &#8721;<sub><var>j</var> &#8712; <var>S</var>(<var>E</var>)</sub> <var>b</var><sub>j</sub>&#8201;<strong class="up">1</strong>[&#8202;<var>w</var><sub>j</sub>(<var>E</var>) &#8805; <var>w</var>&#8202;] &#8805; <var>q</var> &#8721;<sub><var>j</var> &#8712; <var>S</var>(<var>E</var>)</sub> <var>b</var><sub>j</sub> &#8202;}, &nbsp;&nbsp;&nbsp; <var>q</var> = &#189;</div>
+    <p>the retired-work level reached by the median unit of stake rather than the median identity, with the stake quantile <var>q</var> (default 1/2) governance-tunable and distinct from the half-saturation &#954;. If <var>S</var>(<var>E</var>) is empty, no node clearing &#964;<sub>w</sub> (as at bootstrap, before any gated demand accrues), <var>m</var>(<var>E</var>) is undefined and the protocol sets workBoost<sub>i</sub> = 0 for all <var>i</var>, running as vanilla FPoS; the boost switches on automatically in the first epoch some node clears the floor. Then <var>g</var><sub>i</sub>(<var>E</var>) = <var>w</var><sub>i</sub>(<var>E</var>)/<var>m</var>(<var>E</var>) and</p>
+    <div class="eq">workBoost<sub>i</sub> = <var>B</var><sub>max</sub>&#8201;<var>g</var><sub>i</sub>(<var>E</var>) / (<var>g</var><sub>i</sub>(<var>E</var>) + &#954;)</div>
+    <p>The map is monotone, concave, zero at zero demand (recovering vanilla FPoS), and bounded by <var>B</var><sub>max</sub> (governance, e.g. 2&#8211;3).</p>
+    <div class="thm">
+      <p><span class="head">Remark 1 (Dust-Sybil resistance).</span> A plain count median over positive-work nodes is cheap to move: an adversary registering many dust servers with <var>w</var><sub>j</sub> just above zero drags it down, so a genuine large-work node reaches the concave cap with far less real work. The dust floor &#964;<sub>w</sub> and stake-weighting close this, since each eligible node enters <var>m</var>(<var>E</var>) weighted by its stake <var>b</var><sub>j</sub> rather than as one identity, so shifting the stake-weighted median past a challenger requires controlling roughly half the eligible stake mass. Sybil identity count is then irrelevant without stake behind it.</p>
+    </div>
+
+    <h3 id="sub-lemma"><span class="secno">7.2</span>Bounded amplification</h3>
+    <div class="thm">
+      <p><span class="head">Lemma 2 (Bounded amplification).</span> Take the worst case, an attacker fully boosted while the honest set is unboosted. Since 0 &#8804; workBoost<sub>i</sub> &lt; <var>B</var><sub>max</sub>, a party with stake share &#963; then has forging-weight share</p>
+      <div class="eq"><var>s</var> = (1 + <var>B</var><sub>max</sub>)&#963; / ((1 + <var>B</var><sub>max</sub>)&#963; + (1 &#8722; &#963;)),</div>
+      <p>so controlling a forging majority (<var>s</var> &gt; &#189;) requires</p>
+      <div class="eq">&#963; &gt; 1 / (2 + <var>B</var><sub>max</sub>).</div>
+    </div>
+    <p><em>Proof.</em> In the worst case the attacker's multiplier is 1 + <var>B</var><sub>max</sub> and every honest stakeholder's is 1, which gives the share <var>s</var> above. Requiring <var>s</var> &gt; &#189; gives (1 + <var>B</var><sub>max</sub>)&#963; &gt; 1 &#8722; &#963;, i.e. &#963; &gt; 1/(2 + <var>B</var><sub>max</sub>).</p>
+    <p>At <var>B</var><sub>max</sub> = 2, an attacker still needs more than &#188; of stake (vs. &#189; for pure FPoS), the disclosed, bounded cost of coupling work to consensus.</p>
+
+    <h3 id="sub-selfdeal"><span class="secno">7.3</span>Self-dealing deterrence</h3>
+    <p>A node can pay itself to fabricate demand. Because it recovers &#966;<sub>n</sub> + &#966;<sub>v</sub> on the round trip, its only real loss is the burned fraction plus wash friction &#969; on the payer-gate swap. Per dollar self-dealt, the forfeit rate is</p>
+    <div class="eq"><var>f</var> = &#966;<sub>b</sub> + &#969;&#8201;(&#966;<sub>n</sub> + &#966;<sub>v</sub>) &#8776; &#966;<sub>b</sub></div>
+    <p>The analysis conservatively sets &#969; = 0, assuming the attacker recycles the recovered node and verifier shares through the payer gate at zero cost. Since <var>f</var> &#8805; &#966;<sub>b</sub> always, every deterrence figure below rests on the burn alone, and any real-world swap friction only strengthens it.</p>
+    <p>Let <var>V</var> be the self-served volume needed to saturate the boost and <var>G</var> the maximum boost gain. Deterrence is</p>
+    <div class="eq"><var>D</var> = <var>f</var> &#183; <var>V</var> / <var>G</var> &#8776; &#966;<sub>b</sub>&#8201;<var>V</var> / <var>G</var></div>
+    <p>At launch (&#966;<sub>b</sub> = 0.60), against a 5%-stake attacker at <var>B</var><sub>max</sub> = 2, <var>D</var> &#8776; 4.9&#215;, self-dealing is strictly loss-making. Note the deterrent is the burn fraction only; the node share, being recovered, contributes nothing, which is why &#966;<sub>n</sub> cannot be raised freely (<a class="xref" href="#sub-governedsplit">&#167;7.4</a>).</p>
+
+    <h3 id="sub-governedsplit"><span class="secno">7.4</span>The split as a governed function of network maturity</h3>
+    <p>Write the boost-gain fraction <var>g</var><sub>frac</sub> = <var>G</var>/<span class="up">Pool</span>, which from the Lemma's worst case has the closed form</p>
+    <div class="eq"><var>g</var><sub>frac</sub>(&#963;, <var>B</var><sub>max</sub>) = (1 + <var>B</var><sub>max</sub>)&#963; / (1 + &#963; <var>B</var><sub>max</sub>) &#8722; &#963; &nbsp;&nbsp; (&#8776; 0.086 at &#963; = &#963;<sub>adv</sub> = 5%, <var>B</var><sub>max</sub> = 2),</div>
+    <p>evaluated at &#963;<sub>adv</sub>, the assumed worst-case adversary stake share against which the ceiling is calibrated. Write <var>k</var><sub>V</sub> = <var>V</var>/<span class="up">Pool</span> for the maturity ratio, the self-serve volume needed to saturate the boost per unit of security budget, made on-chain-computable below. Requiring deterrence <var>D</var> &#8805; <var>M</var> gives a minimum burn:</p>
+    <div class="eq">&#966;<sub>b</sub><sup>min</sup> = <var>M</var> &#183; <var>g</var><sub>frac</sub> / <var>k</var><sub>V</sub> &nbsp;&#8658;&nbsp; &#966;<sub>n</sub><sup>max</sup> = 1 &#8722; &#966;<sub>v</sub> &#8722; <var>M</var>&#8201;<var>g</var><sub>frac</sub> / <var>k</var><sub>V</sub></div>
+    <p>The pool cancels. The safe node-share ceiling does not depend on the size of the security budget, only on the margin <var>M</var> and the ratio <var>k</var><sub>V</sub>. <var>k</var><sub>V</sub> is a network-maturity proxy: low when median honest work is small relative to the pool (a thin, early network is cheaply farmed), rising as real usage deepens.</p>
+    <p>Concretely, <var>k</var><sub>V</sub> is computed from measured quantities each epoch. Saturating the boost to a fraction &#952; of <var>B</var><sub>max</sub> requires sustaining <var>g</var><sub>i</sub> = &#967;&#8201;&#954; with &#967; = &#952;/(1 &#8722; &#952;) (inverting workBoost = <var>B</var><sub>max</sub>&#8201;<var>g</var>/(<var>g</var> + &#954;)), hence a per-epoch burned gated volume of &#967;&#8201;&#954;&#8201;<var>m</var>(<var>E</var>). Annualized against the security budget,</p>
+    <div class="eq"><var>k</var><sub>V</sub>(<var>E</var>) = &#967;&#8201;&#954;&#8201;<var>m</var>(<var>E</var>)&#8201;<var>E</var><sub>yr</sub> / (<var>R</var><sub>yr</sub>(<var>E</var>)&#8201;<var>P&#772;</var>(<var>E</var>)),</div>
+    <p>where <var>E</var><sub>yr</sub> = 26 is epochs per year, <var>R</var><sub>yr</sub>(<var>E</var>) the annualized HRTH emission at the current height (<a class="xref" href="#sub-curve">&#167;2.2</a>), and <var>P&#772;</var>(<var>E</var>) the epoch TWAP of the HRTH price. Every input is measured or protocol-known: <var>m</var>(<var>E</var>) from <a class="xref" href="#sub-workboost">&#167;7.1</a>, &#954; and <var>B</var><sub>max</sub> constants, <var>P&#772;</var>(<var>E</var>) an oracle TWAP like <var>p&#772;</var><sub>m</sub>(<var>E</var>). The convention &#952; = 0.8 (so &#967; = 4) is a protocol constant.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th><var>k</var><sub>V</sub> (maturity)</th><th>&#966;<sub>n</sub><sup>max</sup> at <var>M</var> = 3&#215;</th><th>&#966;<sub>n</sub><sup>max</sup> at <var>M</var> = 5&#215;</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0.71 (early)</td><td>54%</td><td>29%</td></tr>
+          <tr><td>1.00 (growing)</td><td>64%</td><td>47%</td></tr>
+          <tr><td>1.50 (deep)</td><td>73%</td><td>61%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tabcaption"><span class="cn">Table 3:</span> Safe node-share ceiling as a function of network maturity <var>k</var><sub>V</sub> and deterrence margin <var>M</var>.</p>
+    <p>Rule: launch node share low (30%, giving &#8776;5&#215; margin at <var>k</var><sub>V</sub> &#8776; 0.71) and let governance raise it toward the <var>M</var> &#8805; 3&#215; ceiling as measured <var>k</var><sub>V</sub> climbs, never past it. The ceiling is protocol-enforced, not advisory: the protocol recomputes &#966;<sub>n</sub><sup>max</sup> = 1 &#8722; &#966;<sub>v</sub> &#8722; <var>M</var>&#8201;<var>g</var><sub>frac</sub>/<var>k</var><sub>V</sub> each epoch from the measured <var>k</var><sub>V</sub> and rejects any governance-set split with &#966;<sub>n</sub> above it. If a falling <var>k</var><sub>V</sub> pushes the ceiling below the current &#966;<sub>n</sub>, the split is clamped to the ceiling from the next epoch, giving it the same mechanical status as the capacity clamp of <a class="xref" href="#sub-blockdist">&#167;3.3</a>: no vote can make self-dealing profitable, a constraint, not a policy. The protocol measures <var>k</var><sub>V</sub> each epoch; the split is a governed function, not a constant. Attempting to cover node costs by pushing &#966;<sub>n</sub> toward 90% drives <var>D</var> below 1 (self-dealing becomes profitable) and is prohibited: cost coverage is the subsidy's job (<a class="xref" href="#sub-subsidysizing">&#167;5.3</a>).</p>
+
+    <h2 id="sec-params"><span class="secno">8</span>Parameter reference</h2>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Symbol</th><th>Meaning</th><th>Value</th><th>Kind</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><var>C</var><sub>max</sub></td><td>HRTH hard cap</td><td><var>B</var>/0.03 (illustrative 100,000,000)</td><td>derived (freeze)</td></tr>
+          <tr><td><var>B</var></td><td>total burn credits at freeze</td><td>turnout-dependent (illustrative 3,000,000)</td><td>derived (freeze)</td></tr>
+          <tr><td><var>P</var><sub>gen</sub></td><td>genesis premine (burn claim + DAO + team)</td><td>5% (illustrative 5,000,000)</td><td>genesis</td></tr>
+          <tr><td><var>C</var><sub>emit</sub></td><td>emission (forged)</td><td>95% (illustrative 95,000,000)</td><td>genesis</td></tr>
+          <tr><td>&#964;<sub>b</sub></td><td>block time</td><td>60 s</td><td>protocol</td></tr>
+          <tr><td><var>T</var><sub>1/2</sub></td><td>reward half-life</td><td>10 yr</td><td>genesis</td></tr>
+          <tr><td><var>N</var><sub>yr</sub></td><td>blocks per year</td><td>525,960</td><td>protocol</td></tr>
+          <tr><td><var>R</var><sub>0</sub></td><td>initial block reward</td><td>&#8776; 12.52 HRTH</td><td>derived</td></tr>
+          <tr><td><var>N</var><sub>ep</sub></td><td>Cred epoch</td><td>2 wk (20,160 blocks)</td><td>protocol</td></tr>
+          <tr><td>&#955;</td><td>Cred consumption-EMA rate</td><td>(0,1]</td><td>DAO-set constant</td></tr>
+          <tr><td>&#947;</td><td>Cred growth allowance</td><td>&#8805; 0</td><td>DAO-set constant</td></tr>
+          <tr><td><var>Q</var><sub>m</sub>(0)</td><td>initial Cred supply per model</td><td>DAO-set</td><td>governance</td></tr>
+          <tr><td><var>p&#772;</var><sub>m</sub>(<var>E</var>)</td><td>epoch TWAP of Cred-<var>m</var> price</td><td>measured</td><td>protocol</td></tr>
+          <tr><td><var>P&#772;</var>(<var>E</var>)</td><td>epoch TWAP of HRTH price</td><td>measured</td><td>protocol</td></tr>
+          <tr><td>&#966;<sub>b</sub> / &#966;<sub>n</sub> / &#966;<sub>v</sub></td><td>retirement split</td><td>0.60 / 0.30 / 0.10</td><td>governance (clamped by &#966;<sub>n</sub><sup>max</sup>)</td></tr>
+          <tr><td><var>B</var><sub>max</sub></td><td>forging-boost cap</td><td>2 (2&#8211;3)</td><td>governance</td></tr>
+          <tr><td>&#945;</td><td>workBoost EMA rate</td><td>(0,1]</td><td>governance</td></tr>
+          <tr><td>&#954;</td><td>workBoost half-saturation</td><td>&gt; 0</td><td>governance</td></tr>
+          <tr><td>&#964;<sub>w</sub></td><td>workBoost dust floor</td><td>&gt; 0</td><td>governance</td></tr>
+          <tr><td><var>q</var></td><td>stake quantile for the median</td><td>1/2</td><td>governance</td></tr>
+          <tr><td><var>b</var><sub>min</sub></td><td>minimum stake to serve</td><td>&#8211;</td><td>governance</td></tr>
+          <tr><td><var>N</var><sub>act</sub></td><td>position activation window</td><td>1000 blocks</td><td>protocol</td></tr>
+          <tr><td>&#964;<sub>unb</sub></td><td>exit delay</td><td>0</td><td>protocol</td></tr>
+          <tr><td><var>M</var></td><td>target deterrence margin</td><td>&#8805; 3&#215;</td><td>governance</td></tr>
+          <tr><td>&#963;<sub>adv</sub></td><td>assumed adversary stake share (ceiling calibration)</td><td>5%</td><td>governance</td></tr>
+          <tr><td>&#952;</td><td>boost-saturation convention for <var>k</var><sub>V</sub></td><td>0.8</td><td>protocol</td></tr>
+          <tr><td>&#969;</td><td>wash friction on the recycled node share</td><td>&#8805; 0, taken as 0 (worst case)</td><td>market</td></tr>
+          <tr><td>penalty</td><td>response to proven cheating</td><td>generation-suspension</td><td>protocol</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tabcaption"><span class="cn">Table 4:</span> Parameter reference. Constants marked genesis or governance are tunable; the formulas are the specification.</p>
+    <p>Illustrative economics: HRTH &#8776; $0.20, node cost &#8776; $0.17/1M tok, break-even Cred &#8776; $0.58/1M tok, market band $0.12&#8211;0.90/1M, year-1 pool &#8776; 6.4M HRTH (&#8776;$1.27M).</p>
+
+    <h2 id="sec-rail"><span class="secno">9</span>Optional: the stablecoin settlement rail and HRTH buyback</h2>
+    <p>Creds are the default and only consensus-bearing settlement instrument. Two roles for external stablecoins are distinguished, because only one is safe by default.</p>
+    <p>The on-ramp is the default and always safe: a buyer pays in USDC/USDT, the gateway atomically swaps to the model's Cred and settles by burning it. The buyer experiences &#8220;pay a dollar, get an answer&#8221;; the protocol sees a burned Cred, so <a class="xref" href="#sec-cred">&#167;3</a>&#8211;<a class="xref" href="#sec-security">&#167;7</a> are untouched. This is the recommended universal payment experience.</p>
+    <p>The parallel rail with buyback is a governance option: nodes may also accept stablecoins directly, with a protocol cut &#966;<sub>dao</sub> routed to the DAO in stablecoin and used to buy back HRTH on the open market. Because only external money can buy back HRTH (purchasing one nascent protocol token with another is circular) the buyback is the one mechanism that converts stablecoin inference demand into HRTH price support, complementing (not replacing) the burn's scarcity. The binding constraint: if stablecoin jobs earn workBoost, the DAO cut is the only deterrent on that rail, so it must be burn-equivalent,</p>
+    <div class="eq">&#966;<sub>dao</sub> &#8805; &#966;<sub>b</sub><sup>min</sup> = <var>M</var>&#8201;<var>g</var><sub>frac</sub> / <var>k</var><sub>V</sub> &nbsp;&nbsp; (&#8776; 36% at <var>M</var> = 3, <var>k</var><sub>V</sub> = 0.71),</div>
+    <p>which is, conveniently, also the size that makes the buyback material. Annual buyback volume is &#966;<sub>dao</sub> &#183; (stablecoin revenue); whether it is significant against HRTH float is the empirical test that decides if the rail earns its complexity, or whether the network stays burn-and-on-ramp only until scale.</p>
+
+    <div class="closing">All figures illustrative and mutually consistent with <a class="xref" href="#sec-params">&#167;8</a>. Formulas are the specification; constants are for governance and genesis to set. Cross-references (FPoS forging, verification committee, payer-gate provenance) are detailed in <a href="/whitepaper/">the Hearth whitepaper</a> &#167;4&#8211;&#167;6.</div>
+
+    <h2 id="references">References</h2>
+    <ol class="refs">
+      <li id="ref-1"><span class="rn">[1]</span><span>Aggelos Kiayias, Philip Lazos, Paolo Penna. Single-Token vs Two-Token Blockchain Tokenomics. 6th Conference on Advances in Financial Technologies (AFT 2025). 2025. arXiv:2403.15429. <a href="https://arxiv.org/abs/2403.15429">https://arxiv.org/abs/2403.15429</a></span></li>
+      <li id="ref-2"><span class="rn">[2]</span><span>Helium. Helium Documentation: Tokens and Data Credits. 2024. <a href="https://docs.helium.com">https://docs.helium.com</a></span></li>
+      <li id="ref-3"><span class="rn">[3]</span><span>Render Network Foundation. Render Network: Burn-and-Mint Equilibrium. 2023. <a href="https://render.network">https://render.network</a></span></li>
+      <li id="ref-4"><span class="rn">[4]</span><span>DFINITY Foundation. Tokenomics of the Internet Computer. 2025. <a href="https://learn.internetcomputer.org">https://learn.internetcomputer.org</a></span></li>
+      <li id="ref-5"><span class="rn">[5]</span><span>Aggelos Kiayias, Philip Lazos, Jan Christoph Schlegel. Would Friedman Burn Your Tokens? Financial Cryptography and Data Security (FC 2024). 2024. arXiv:2306.17025. <a href="https://arxiv.org/abs/2306.17025">https://arxiv.org/abs/2306.17025</a></span></li>
+    </ol>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <svg viewBox="0 0 64 64" width="30" height="30" aria-hidden="true" style="display: block; margin: 0 auto;">
+      <g fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round">
+        <path d="M7 13 H57"></path><path d="M13 13 V55"></path><path d="M51 13 V55"></path><path d="M7 55 H57"></path>
+      </g>
+      <path fill="var(--fire)" d="M32 26 C26 34 22.8 40 26.2 46.2 A6.9 6.9 0 0 0 37.8 46.2 C41.2 40 38 34 32 26 Z"></path>
+    </svg>
+    <p class="name">Hearth</p>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="/">hearth.tech</a>
+      <a href="/whitepaper/">Whitepaper</a>
+      <a href="https://x.com/hearthchain" rel="me noopener">X</a>
+      <a href="https://github.com/hearthchain">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
+</body></html>
